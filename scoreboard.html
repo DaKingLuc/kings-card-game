@@ -126,7 +126,7 @@ function startTimer() {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    if (totalSeconds <= 10) {
+    if (totalSeconds <= 60) {
       timerDisplay.classList.add("red-alert");
     }
   };
@@ -162,6 +162,8 @@ function updateHPStyle(id) {
 }
 
 function changeHP(id, value) {
+  const audio = document.getElementById('btnSound');
+  if (audio) audio.play();
   const input = document.getElementById(id);
   let hp = parseInt(input.value);
   hp = Math.max(0, hp + value);
@@ -170,6 +172,8 @@ function changeHP(id, value) {
 }
 
 function calculateCombo() {
+  const audio = document.getElementById('btnSound');
+  if (audio) audio.play();
   const base = parseInt(document.getElementById("baseNum").value);
   const mult = parseInt(document.getElementById("multNum").value);
   const baseSuit = document.getElementById("baseSuit").value;
@@ -228,6 +232,7 @@ window.onload = () => {
   
 </script>
 
+<audio id="btnSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
 </head>
 <body>
   <nav>
