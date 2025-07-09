@@ -116,6 +116,38 @@
     }
   </style>
   <script>
+let timerInterval;
+function startTimer() {
+  clearInterval(timerInterval);
+  let totalSeconds = parseInt(document.getElementById("minutesInput").value) * 60;
+  const timerDisplay = document.getElementById("timer");
+
+  const updateDisplay = () => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    if (totalSeconds <= 10) {
+      timerDisplay.classList.add("red-alert");
+    }
+  };
+
+  updateDisplay();
+  timerInterval = setInterval(() => {
+    if (totalSeconds > 0) {
+      totalSeconds--;
+      updateDisplay();
+    } else {
+      clearInterval(timerInterval);
+    }
+  }, 1000);
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  const minutes = parseInt(document.getElementById("minutesInput").value);
+  document.getElementById("timer").textContent = `${minutes}:00`;
+  document.getElementById("timer").classList.remove("red-alert");
+}
 function updateHPStyle(id) {
   const el = document.getElementById(id);
   const hp = parseInt(el.value);
