@@ -130,14 +130,15 @@
     }
 
     function changeHP(id, value) {
-      const input = document.getElementById(id);
-      let hp = parseInt(input.value);
-      hp = Math.max(0, hp + value);
-      input.value = hp;
-      updateHPStyle(id);
-      input.classList.add('shake');
-      setTimeout(() => input.classList.remove('shake'), 500);
-    }
+  const input = document.getElementById(id);
+  let hp = parseInt(input.value);
+  hp = Math.max(0, hp + value);
+  input.value = hp;
+  updateHPStyle(id);
+  input.classList.add('shake');
+  setTimeout(() => input.classList.remove('shake'), 500);
+  document.getElementById("hitSound").play();
+}
 
     function calculateCombo() {
       const base = parseInt(document.getElementById("baseNum").value);
@@ -175,6 +176,8 @@
         const damage = power1 - power2;
         hp2.value = Math.max(0, parseInt(hp2.value) - damage);
         updateHPStyle("hp2");
+        document.getElementById("hitSound").play();
+        if (parseInt(hp2.value) <= 25) document.getElementById("lowHealth").play();
         hp2.classList.add('shake');
         setTimeout(() => hp2.classList.remove('shake'), 500);
         resultText += `Player 2 takes ${damage} damage.`;
@@ -182,6 +185,8 @@
         const damage = power2 - power1;
         hp1.value = Math.max(0, parseInt(hp1.value) - damage);
         updateHPStyle("hp1");
+        document.getElementById("hitSound").play();
+        if (parseInt(hp1.value) <= 25) document.getElementById("lowHealth").play();
         hp1.classList.add('shake');
         setTimeout(() => hp1.classList.remove('shake'), 500);
         resultText += `Player 1 takes ${damage} damage.`;
@@ -221,6 +226,8 @@
       updateHPStyle('hp2');
     };
   </script>
+<audio id="hitSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_416f9e01dc.mp3"></audio>
+<audio id="lowHealth" src="https://cdn.pixabay.com/audio/2022/10/30/audio_d4b020c1ec.mp3"></audio>
 </head>
 <body>
   <nav>
