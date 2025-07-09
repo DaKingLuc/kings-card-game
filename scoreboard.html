@@ -40,7 +40,7 @@
       max-width: 400px;
       margin: 0 auto 40px auto;
     }
-    input[type="number"] {
+    input[type="number"], select {
       width: 60px;
       font-size: 1.5rem;
       text-align: center;
@@ -57,13 +57,14 @@
     .btn:hover {
       background: darkred;
     }
-    .timer-box {
+    .timer-box, .combo-box {
       background: #1b1b1b;
       border: 2px solid crimson;
       border-radius: 12px;
       padding: 20px;
-      max-width: 400px;
+      max-width: 500px;
       margin: auto;
+      margin-top: 30px;
     }
     #timer {
       font-size: 2rem;
@@ -79,6 +80,10 @@
     }
     #custom-time {
       margin-top: 10px;
+    }
+    select {
+      font-size: 1rem;
+      margin: 5px;
     }
   </style>
 </head>
@@ -118,6 +123,27 @@
     <button class="btn" onclick="resetTimer()">Reset</button>
   </div>
 
+  <div class="combo-box">
+    <h2>Test Combo Calculator</h2>
+    <div>
+      <label>Base Card Number: <input type="number" id="baseNum" value="6" min="1" max="11"></label>
+      <label>Suit Match: <select id="suitMatch">
+        <option value="1">No</option>
+        <option value="3">Yes</option>
+      </select></label>
+      <label>Color Match: <select id="colorMatch">
+        <option value="1">No</option>
+        <option value="2">Yes</option>
+      </select></label>
+      <label>Exact Match: <select id="exactMatch">
+        <option value="1">No</option>
+        <option value="number">Yes</option>
+      </select></label>
+    </div>
+    <button class="btn" onclick="calculateCombo()">Calculate & Apply</button>
+    <p id="comboResult"></p>
+  </div>
+
   <audio id="endSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1b2bfb3cd1.mp3?filename=game-over-arcade-6435.mp3"></audio>
 
   <script>
@@ -136,7 +162,7 @@
     }
 
     let timerInterval;
-    let timeLeft = 600; // Default 10 minutes
+    let timeLeft = 600;
 
     function startTimer() {
       clearInterval(timerInterval);
@@ -171,6 +197,21 @@
       const timerDisplay = document.getElementById("timer");
       timerDisplay.innerText = `${customMinutes}:00`;
       timerDisplay.classList.remove("red-alert");
+    }
+
+    function calculateCombo() {
+      const base = parseInt(document.getElementById("baseNum").value);
+      const suit = parseInt(document.getElementById("suitMatch").value);
+      const color = parseInt(document.getElementById("colorMatch").value);
+      const exact = document.getElementById("exactMatch").value === 'number';
+
+      let result = base * suit * color;
+      if (exact) result *= base;
+
+      const hp2 = document.getElementById("hp2");
+      hp2.value = Math.max(0, parseInt(hp2.value) - result);
+
+      document.getElementById("comboResult").innerText = `Attack Power: ${result} | Player 2 HP: ${hp2.value}`;
     }
   </script>
 </body>
