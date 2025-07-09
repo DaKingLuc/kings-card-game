@@ -232,7 +232,7 @@ window.onload = () => {
   
 </script>
 
-<audio id="btnSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+<audio id="btnSound" preload="auto" crossorigin="anonymous" src="https://cdn.pixabay.com/audio/2022/03/15/audio_3a01f1f6a2.mp3"></audio>
 </head>
 <body>
   <nav>
@@ -364,5 +364,9 @@ window.onload = () => {
       <p id="comboResult"></p>
     </div>
   </div>
+<div style="margin-top: 40px;">
+  <h3>🔊 Test Sound</h3>
+  <button class="btn" onclick="document.getElementById('btnSound').play()">Play Test Sound</button>
+</div>
 </body>
 </html>
