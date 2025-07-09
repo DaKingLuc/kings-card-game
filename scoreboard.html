@@ -116,52 +116,28 @@
     }
   </style>
   <script>
-    function updateHPStyle(id) {
-      const el = document.getElementById(id);
-      const hp = parseInt(el.value);
-      el.classList.remove('hp-green', 'hp-yellow', 'hp-red');
-      if (hp > 50) {
-        el.classList.add('hp-green');
-      } else if (hp > 25) {
-        el.classList.add('hp-yellow');
-      } else {
-        el.classList.add('hp-red');
-      }
-    }
+function updateHPStyle(id) {
+  const el = document.getElementById(id);
+  const hp = parseInt(el.value);
+  el.classList.remove('hp-green', 'hp-yellow', 'hp-red');
+  if (hp > 50) {
+    el.classList.add('hp-green');
+  } else if (hp > 25) {
+    el.classList.add('hp-yellow');
+  } else {
+    el.classList.add('hp-red');
+  }
+}
 
-    function changeHP(id, value) {
+function changeHP(id, value) {
   const input = document.getElementById(id);
   let hp = parseInt(input.value);
   hp = Math.max(0, hp + value);
   input.value = hp;
   updateHPStyle(id);
-  input.classList.add('shake');
-  setTimeout(() => input.classList.remove('shake'), 500);
-  document.getElementById("hitSound").play();
 }
 
-    function calculateCombo() {
-  const cardMap = {
-    heart: 'heart',
-    diamond: 'diamond',
-    club: 'club',
-    spade: 'spade'
-  };
-
-  const updateCardImages = (id, value, suit) => {
-    document.getElementById(id).src = `https://upload.wikimedia.org/wikipedia/commons/${getCardImagePath(value, suit)}`;
-  };
-
-  const getCardImagePath = (value, suit) => {
-    const suitInitial = suit.charAt(0);
-    const valueMap = {
-      '1': 'A', '11': 'A',
-      '10': '10', '9': '9', '8': '8', '7': '7', '6': '6', '5': '5', '4': '4', '3': '3', '2': '2'
-    };
-    const fileName = `Playing_card_${suit}_${valueMap[value]}.svg`;
-    const folder = suit === 'heart' ? '5/57' : suit === 'diamond' ? 'f/f2' : suit === 'club' ? '2/27' : 'd/d5';
-    return `${folder}/${fileName}`;
-  };
+function calculateCombo() {
   const base = parseInt(document.getElementById("baseNum").value);
   const mult = parseInt(document.getElementById("multNum").value);
   const baseSuit = document.getElementById("baseSuit").value;
@@ -197,31 +173,19 @@
     const damage = power1 - power2;
     hp2.value = Math.max(0, parseInt(hp2.value) - damage);
     updateHPStyle("hp2");
-    if (parseInt(hp2.value) <= 25) document.getElementById("lowHealth").play();
-    hp2.classList.add('shake');
-    document.getElementById("hitSound").play();
-    setTimeout(() => hp2.classList.remove('shake'), 500);
     resultText += `Player 2 takes ${damage} damage.`;
   } else if (power2 > power1) {
     const damage = power2 - power1;
     hp1.value = Math.max(0, parseInt(hp1.value) - damage);
     updateHPStyle("hp1");
-    if (parseInt(hp1.value) <= 25) document.getElementById("lowHealth").play();
-    hp1.classList.add('shake');
-    document.getElementById("hitSound").play();
-    setTimeout(() => hp1.classList.remove('shake'), 500);
     resultText += `Player 1 takes ${damage} damage.`;
   } else {
     resultText += "It's a tie. No damage dealt.";
   }
 
-  updateCardImages("card1", base, baseSuit);
-  updateCardImages("card2", mult, multSuit);
-  updateCardImages("card3", base2, baseSuit2);
-  updateCardImages("card4", mult2, multSuit2);
   document.getElementById("comboResult").innerText = resultText;
+}
 
-  
 window.onload = () => {
   updateHPStyle('hp1');
   updateHPStyle('hp2');
@@ -231,8 +195,7 @@ window.onload = () => {
 <script>
   
 </script>
-<audio id="hitSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_416f9e01dc.mp3"></audio>
-<audio id="lowHealth" src="https://cdn.pixabay.com/audio/2022/10/30/audio_d4b020c1ec.mp3"></audio>
+
 </head>
 <body>
   <nav>
@@ -272,12 +235,7 @@ window.onload = () => {
 
     <div class="combo-box">
       <h2>Combo Calculator</h2>
-      <div style="margin-bottom: 20px;">
-        <img id="card1" src="https://upload.wikimedia.org/wikipedia/commons/5/57/Playing_card_heart_6.svg" width="80" style="margin: 0 10px;">
-        <img id="card2" src="https://upload.wikimedia.org/wikipedia/commons/2/21/Playing_card_heart_2.svg" width="80" style="margin: 0 10px;">
-        <img id="card3" src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Playing_card_spade_9.svg" width="80" style="margin: 0 10px;">
-        <img id="card4" src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Playing_card_diamond_4.svg" width="80" style="margin: 0 10px;">
-      </div>
+      
       <p>Select the attacker's card and the multiplier card:</p>
       <div>
         <label>Attacker Card:
