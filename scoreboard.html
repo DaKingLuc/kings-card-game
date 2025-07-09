@@ -156,45 +156,7 @@
         return (red.includes(s1) && red.includes(s2)) || (!red.includes(s1) && !red.includes(s2));
       };
 
-      let multiplier1 = 1;
-      if (sameColor(baseSuit, multSuit)) multiplier1 *= 2;
-      if (baseSuit === multSuit) multiplier1 *= 3;
-      if (base === mult) multiplier1 *= base;
-      const power1 = base * multiplier1;
-
-      let multiplier2 = 1;
-      if (sameColor(baseSuit2, multSuit2)) multiplier2 *= 2;
-      if (baseSuit2 === multSuit2) multiplier2 *= 3;
-      if (base2 === mult2) multiplier2 *= base2;
-      const power2 = base2 * multiplier2;
-
-      const hp1 = document.getElementById("hp1");
-      const hp2 = document.getElementById("hp2");
-
-      let resultText = `Player 1 Total: ${power1}, Player 2 Total: ${power2}. `;
-      if (power1 > power2) {
-        const damage = power1 - power2;
-        hp2.value = Math.max(0, parseInt(hp2.value) - damage);
-        updateHPStyle("hp2");
-        document.getElementById("hitSound").play();
-        if (parseInt(hp2.value) <= 25) document.getElementById("lowHealth").play();
-        hp2.classList.add('shake');
-        setTimeout(() => hp2.classList.remove('shake'), 500);
-        resultText += `Player 2 takes ${damage} damage.`;
-      } else if (power2 > power1) {
-        const damage = power2 - power1;
-        hp1.value = Math.max(0, parseInt(hp1.value) - damage);
-        updateHPStyle("hp1");
-        document.getElementById("hitSound").play();
-        if (parseInt(hp1.value) <= 25) document.getElementById("lowHealth").play();
-        hp1.classList.add('shake');
-        setTimeout(() => hp1.classList.remove('shake'), 500);
-        resultText += `Player 1 takes ${damage} damage.`;
-      } else {
-        resultText += "It's a tie. No damage dealt.";
-      }
-
-      document.getElementById("comboResult").innerText = resultText;
+      
     };
 
       let multiplier1 = 1;
