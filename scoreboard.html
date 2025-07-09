@@ -59,6 +59,7 @@
       text-align: center;
       padding: 4px;
       margin: 5px;
+      transition: all 0.3s ease-in-out;
     }
     .btn {
       background: crimson;
@@ -84,7 +85,95 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.4; }
     }
+    .hp-green {
+      border: 2px solid lime;
+      background-color: #202f20;
+    }
+    .hp-yellow {
+      border: 2px solid gold;
+      background-color: #302e1b;
+    }
+    .hp-red {
+      border: 2px solid red;
+      background-color: #3a1b1b;
+      animation: blink-red 0.8s infinite;
+    }
+    .shake {
+      animation: shake 0.5s;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes blink-red {
+      0% { background-color: #3a1b1b; }
+      50% { background-color: #5a1b1b; }
+      100% { background-color: #3a1b1b; }
+    }
   </style>
+  <script>
+    function updateHPStyle(id) {
+      const el = document.getElementById(id);
+      const hp = parseInt(el.value);
+      el.classList.remove('hp-green', 'hp-yellow', 'hp-red');
+      if (hp > 50) {
+        el.classList.add('hp-green');
+      } else if (hp > 25) {
+        el.classList.add('hp-yellow');
+      } else {
+        el.classList.add('hp-red');
+      }
+    }
+
+    function changeHP(id, value) {
+      const input = document.getElementById(id);
+      let hp = parseInt(input.value);
+      hp = Math.max(0, hp + value);
+      input.value = hp;
+      updateHPStyle(id);
+      input.classList.add('shake');
+      setTimeout(() => input.classList.remove('shake'), 500);
+    }
+
+    function calculateCombo() {
+      const base = parseInt(document.getElementById("baseNum").value);
+      const mult = parseInt(document.getElementById("multNum").value);
+      const baseSuit = document.getElementById("baseSuit").value;
+      const multSuit = document.getElementById("multSuit").value;
+      const target = document.getElementById("targetPlayer").value;
+
+      const sameColor = (s1, s2) => {
+        const red = ['heart', 'diamond'];
+        return (red.includes(s1) && red.includes(s2)) || (!red.includes(s1) && !red.includes(s2));
+      };
+
+      let multiplier = 1;
+      if (sameColor(baseSuit, multSuit)) multiplier *= 2;
+      if (baseSuit === multSuit) multiplier *= 3;
+      if (base === mult) multiplier *= base;
+
+      const power1 = base * multiplier;
+      const power2 = mult * multiplier;
+      const damage = Math.abs(power1 - power2);
+
+      const hpTarget = document.getElementById(target);
+      hpTarget.value = Math.max(0, parseInt(hpTarget.value) - damage);
+      updateHPStyle(target);
+
+      hpTarget.classList.add('shake');
+      setTimeout(() => hpTarget.classList.remove('shake'), 500);
+
+      document.getElementById("comboResult").innerText = `Player Damage: ${damage} (Base Total: ${power1} vs Multiplier Total: ${power2}) | ${target.toUpperCase()} HP: ${hpTarget.value}`;
+    }
+
+    window.onload = () => {
+      updateHPStyle('hp1');
+      updateHPStyle('hp2');
+    };
+  </script>
 </head>
 <body>
   <nav>
