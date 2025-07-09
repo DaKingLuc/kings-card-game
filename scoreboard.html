@@ -209,11 +209,15 @@ function calculateCombo() {
     const damage = power1 - power2;
     hp2.value = Math.max(0, parseInt(hp2.value) - damage);
     updateHPStyle("hp2");
+    hp2.classList.add("shake");
+    setTimeout(() => hp2.classList.remove("shake"), Math.min(1000, damage * 20));
     resultText += `Player 2 takes ${damage} damage.`;
   } else if (power2 > power1) {
     const damage = power2 - power1;
     hp1.value = Math.max(0, parseInt(hp1.value) - damage);
     updateHPStyle("hp1");
+    hp1.classList.add("shake");
+    setTimeout(() => hp1.classList.remove("shake"), Math.min(1000, damage * 20));
     resultText += `Player 1 takes ${damage} damage.`;
   } else {
     resultText += "It's a tie. No damage dealt.";
@@ -362,9 +366,6 @@ window.onload = () => {
       <p id="comboResult"></p>
     </div>
   </div>
-<div style="margin-top: 40px;">
-  <h3>🔊 Test Sound</h3>
-  <button class="btn" onclick="document.getElementById('btnSound').play()">Play Test Sound</button>
-</div>
+
 </body>
 </html>
