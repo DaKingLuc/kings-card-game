@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <title>Scoreboard | KINGS</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet">
   <style>
     body {
       background: #121212;
       color: #f5f5f5;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Uncial Antiqua', cursive;
       text-align: center;
-      padding: 60px;
+      padding: 40px;
     }
-    h1 {
-      font-family: 'Cinzel', serif;
+    h1, h2 {
       color: crimson;
     }
     nav {
@@ -21,7 +20,7 @@
       justify-content: center;
       background: #2a2a2a;
       padding: 10px 0;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
     nav a {
       color: #f5f5f5;
@@ -32,16 +31,31 @@
     nav a:hover {
       color: crimson;
     }
-    .scoreboard, .timer-box, .combo-box {
+    .main-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .scoreboard, .combo-box {
       background: #1b1b1b;
       border: 2px solid crimson;
       border-radius: 12px;
       padding: 20px;
+      flex: 1 1 400px;
       max-width: 500px;
-      margin: 30px auto;
+    }
+    .timer-box {
+      background: #1b1b1b;
+      border: 2px solid crimson;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 0 auto 30px auto;
+      max-width: 500px;
     }
     input[type="number"], select {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       text-align: center;
       padding: 4px;
       margin: 5px;
@@ -70,9 +84,6 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.4; }
     }
-    #custom-time {
-      margin-top: 10px;
-    }
   </style>
 </head>
 <body>
@@ -83,184 +94,91 @@
     <a href="future.html">Future</a>
   </nav>
 
-  <h1>Scoreboard</h1>
-
-  <div class="scoreboard">
-    <h2>Player 1 HP</h2>
-    <input type="number" id="hp1" value="200" />
-    <div>
-      <button class="btn" onclick="changeHP('hp1', -10)">-10</button>
-      <button class="btn" onclick="changeHP('hp1', 10)">+10</button>
-    </div>
-
-    <h2>Player 2 HP</h2>
-    <input type="number" id="hp2" value="200" />
-    <div>
-      <button class="btn" onclick="changeHP('hp2', -10)">-10</button>
-      <button class="btn" onclick="changeHP('hp2', 10)">+10</button>
-    </div>
-  </div>
+  <h1>KINGS Scoreboard</h1>
 
   <div class="timer-box">
     <h2>Game Timer</h2>
     <div id="timer">10:00</div>
-    <div id="custom-time">
-      <label>Set Minutes: <input type="number" id="minutesInput" value="10" min="1" max="60"></label>
-    </div>
+    <label>Set Minutes: <input type="number" id="minutesInput" value="10" min="1" max="60"></label>
+    <br />
     <button class="btn" onclick="startTimer()">Start</button>
     <button class="btn" onclick="resetTimer()">Reset</button>
   </div>
 
-  <div class="combo-box">
-    <h2>Combo Calculator</h2>
-    <p>Select the attacker's card and the multiplier card:</p>
-    <div>
-      <label>Attacker Card:
-        <select id="baseNum">
-          <option value="1">A</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6" selected>6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">A (11)</option>
-        </select>
-        <select id="baseSuit">
-          <option value="heart">♥</option>
-          <option value="diamond">♦</option>
-          <option value="club">♣</option>
-          <option value="spade">♠</option>
-        </select>
-      </label>
-      <label>Multiplier Card:
-        <select id="multNum">
-          <option value="1">A</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6" selected>6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">A (11)</option>
-        </select>
-        <select id="multSuit">
-          <option value="heart">♥</option>
-          <option value="diamond">♦</option>
-          <option value="club">♣</option>
-          <option value="spade">♠</option>
-        </select>
-      </label>
+  <div class="main-container">
+    <div class="scoreboard">
+      <h2>Player 1 HP</h2>
+      <input type="number" id="hp1" value="200" />
+      <div>
+        <button class="btn" onclick="changeHP('hp1', -10)">-10</button>
+        <button class="btn" onclick="changeHP('hp1', 10)">+10</button>
+      </div>
+
+      <h2>Player 2 HP</h2>
+      <input type="number" id="hp2" value="200" />
+      <div>
+        <button class="btn" onclick="changeHP('hp2', -10)">-10</button>
+        <button class="btn" onclick="changeHP('hp2', 10)">+10</button>
+      </div>
     </div>
-    <p>Apply damage to:
-      <select id="targetPlayer">
-        <option value="hp2">Player 2</option>
-        <option value="hp1">Player 1</option>
-      </select>
-    </p>
-    <button class="btn" onclick="calculateCombo()">Calculate & Apply</button>
-    <p id="comboResult"></p>
+
+    <div class="combo-box">
+      <h2>Combo Calculator</h2>
+      <p>Select the attacker's card and the multiplier card:</p>
+      <div>
+        <label>Attacker Card:
+          <select id="baseNum">
+            <option value="1">A</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6" selected>6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">A (11)</option>
+          </select>
+          <select id="baseSuit">
+            <option value="heart">♥</option>
+            <option value="diamond">♦</option>
+            <option value="club">♣</option>
+            <option value="spade">♠</option>
+          </select>
+        </label>
+        <br />
+        <label>Multiplier Card:
+          <select id="multNum">
+            <option value="1">A</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6" selected>6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">A (11)</option>
+          </select>
+          <select id="multSuit">
+            <option value="heart">♥</option>
+            <option value="diamond">♦</option>
+            <option value="club">♣</option>
+            <option value="spade">♠</option>
+          </select>
+        </label>
+      </div>
+      <p>Apply damage to:
+        <select id="targetPlayer">
+          <option value="hp2">Player 2</option>
+          <option value="hp1">Player 1</option>
+        </select>
+      </p>
+      <button class="btn" onclick="calculateCombo()">Calculate & Apply</button>
+      <p id="comboResult"></p>
+    </div>
   </div>
-
-  <audio id="endSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1b2bfb3cd1.mp3?filename=game-over-arcade-6435.mp3"></audio>
-
-  <script>
-    function changeHP(id, value) {
-      const input = document.getElementById(id);
-      let hp = parseInt(input.value);
-      hp = Math.max(0, hp + value);
-      input.value = hp;
-
-      if (hp <= 0) {
-        clearInterval(timerInterval);
-        document.getElementById("timer").innerText = id === 'hp1' ? "Player 2 Wins!" : "Player 1 Wins!";
-        document.getElementById("endSound").play();
-        document.getElementById("timer").classList.remove("red-alert");
-      }
-    }
-
-    let timerInterval;
-    let timeLeft = 600;
-
-    function startTimer() {
-      clearInterval(timerInterval);
-      const customMinutes = parseInt(document.getElementById("minutesInput").value);
-      timeLeft = customMinutes * 60;
-      document.getElementById("timer").classList.remove("red-alert");
-
-      timerInterval = setInterval(() => {
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          document.getElementById("timer").innerText = "Time's up!";
-          document.getElementById("endSound").play();
-          document.getElementById("timer").classList.remove("red-alert");
-        } else {
-          timeLeft--;
-          const minutes = Math.floor(timeLeft / 60);
-          const seconds = timeLeft % 60;
-          const timerDisplay = document.getElementById("timer");
-          timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-          if (timeLeft <= 60) {
-            timerDisplay.classList.add("red-alert");
-          }
-        }
-      }, 1000);
-    }
-
-    function resetTimer() {
-      clearInterval(timerInterval);
-      const customMinutes = parseInt(document.getElementById("minutesInput").value);
-      timeLeft = customMinutes * 60;
-      const timerDisplay = document.getElementById("timer");
-      timerDisplay.innerText = `${customMinutes}:00`;
-      timerDisplay.classList.remove("red-alert");
-    }
-
-    function calculateCombo() {
-      const base = parseInt(document.getElementById("baseNum").value);
-      const mult = parseInt(document.getElementById("multNum").value);
-      const baseSuit = document.getElementById("baseSuit").value;
-      const multSuit = document.getElementById("multSuit").value;
-      const target = document.getElementById("targetPlayer").value;
-
-      const sameColor = (s1, s2) => {
-        const red = ['heart', 'diamond'];
-        return (red.includes(s1) && red.includes(s2)) || (!red.includes(s1) && !red.includes(s2));
-      };
-
-      let multiplier = 1;
-      if (sameColor(baseSuit, multSuit)) multiplier *= 2;
-      if (baseSuit === multSuit) multiplier *= 3;
-      if (base === mult) multiplier *= base;
-
-      const power1 = base * multiplier;
-      const power2 = mult * multiplier;
-
-      const damage = Math.abs(power1 - power2);
-
-      const hpTarget = document.getElementById(target);
-      hpTarget.value = Math.max(0, parseInt(hpTarget.value) - damage);
-
-      document.getElementById("comboResult").innerText = `Player Damage: ${damage} (Base Total: ${power1} vs Multiplier Total: ${power2}) | ${target.toUpperCase()} HP: ${hpTarget.value}`;
-    };
-
-      let result = base;
-      if (sameColor(baseSuit, multSuit)) result *= 2;
-      if (baseSuit === multSuit) result *= 3;
-      if (base === mult) result *= base;
-
-      const hpTarget = document.getElementById(target);
-      hpTarget.value = Math.max(0, parseInt(hpTarget.value) - result);
-
-      document.getElementById("comboResult").innerText = `Attack Power: ${result} | ${target.toUpperCase()} HP: ${hpTarget.value}`;
-    }
-  </script>
 </body>
 </html>
