@@ -235,6 +235,22 @@
         return (red.includes(s1) && red.includes(s2)) || (!red.includes(s1) && !red.includes(s2));
       };
 
+      let multiplier = 1;
+      if (sameColor(baseSuit, multSuit)) multiplier *= 2;
+      if (baseSuit === multSuit) multiplier *= 3;
+      if (base === mult) multiplier *= base;
+
+      const power1 = base * multiplier;
+      const power2 = mult * multiplier;
+
+      const damage = Math.abs(power1 - power2);
+
+      const hpTarget = document.getElementById(target);
+      hpTarget.value = Math.max(0, parseInt(hpTarget.value) - damage);
+
+      document.getElementById("comboResult").innerText = `Player Damage: ${damage} (Base Total: ${power1} vs Multiplier Total: ${power2}) | ${target.toUpperCase()} HP: ${hpTarget.value}`;
+    };
+
       let result = base;
       if (sameColor(baseSuit, multSuit)) result *= 2;
       if (baseSuit === multSuit) result *= 3;
