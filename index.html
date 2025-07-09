@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kings - Card Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: #f5f5f5;
+    }
+    header {
+      background: #1e1e1e;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid crimson;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: crimson;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #2a2a2a;
+      padding: 10px 0;
+    }
+    nav a {
+      color: #f5f5f5;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: crimson;
+    }
+    main {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h2 {
+      color: crimson;
+      margin-top: 40px;
+    }
+    .scoreboard {
+      background: #1b1b1b;
+      border: 2px solid crimson;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 400px;
+      margin: 40px auto;
+      text-align: center;
+    }
+    .scoreboard input {
+      width: 60px;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    .btn {
+      background: crimson;
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      border-radius: 6px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: darkred;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>KINGS</h1>
+    <p>The Dark Fantasy Card Game</p>
+  </header>
+  <nav>
+    <a href="#rules">Rules</a>
+    <a href="#scoreboard">Scoreboard</a>
+    <a href="#future">Future</a>
+  </nav>
+
+  <main>
+    <section id="rules">
+      <h2>How to Play</h2>
+      <p>Each player starts with 5 cards and custom HP (100–300). Play one card each turn, then draw a multiplier card. Match color for x2 bonus, match color + suit for x5 bonus. Exact card match? Attack x Multiplier x 5. Deal damage = difference between totals.</p>
+      <ul>
+        <li>Same color = x2</li>
+        <li>Same color + same suit = x5</li>
+        <li>Exact card = Attack × Multiplier × 5</li>
+        <li>Max hand: 5 cards</li>
+        <li>Coin flip for who draws first (if shared deck)</li>
+      </ul>
+    </section>
+
+    <section id="scoreboard">
+      <h2>Scoreboard</h2>
+      <div class="scoreboard">
+        <h3>Player 1 HP</h3>
+        <input type="number" id="hp1" value="200" />
+        <div>
+          <button class="btn" onclick="changeHP('hp1', -10)">-10</button>
+          <button class="btn" onclick="changeHP('hp1', 10)">+10</button>
+        </div>
+
+        <h3>Player 2 HP</h3>
+        <input type="number" id="hp2" value="200" />
+        <div>
+          <button class="btn" onclick="changeHP('hp2', -10)">-10</button>
+          <button class="btn" onclick="changeHP('hp2', 10)">+10</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="future">
+      <h2>Coming Soon: Kings+</h2>
+      <p>Face cards, powers, and more chaos. Stay tuned.</p>
+    </section>
+  </main>
+
+  <script>
+    function changeHP(id, value) {
+      const input = document.getElementById(id);
+      let hp = parseInt(input.value);
+      hp = Math.max(0, hp + value);
+      input.value = hp;
+    }
+  </script>
+</body>
+</html>
