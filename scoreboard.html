@@ -38,9 +38,9 @@
       border-radius: 12px;
       padding: 20px;
       max-width: 400px;
-      margin: 0 auto;
+      margin: 0 auto 40px auto;
     }
-    input {
+    input[type="number"] {
       width: 60px;
       font-size: 1.5rem;
       text-align: center;
@@ -57,6 +57,29 @@
     .btn:hover {
       background: darkred;
     }
+    .timer-box {
+      background: #1b1b1b;
+      border: 2px solid crimson;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+    }
+    #timer {
+      font-size: 2rem;
+      margin: 15px 0;
+    }
+    #timer.red-alert {
+      color: crimson;
+      animation: flash 1s infinite;
+    }
+    @keyframes flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    #custom-time {
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -68,6 +91,7 @@
   </nav>
 
   <h1>Scoreboard</h1>
+
   <div class="scoreboard">
     <h2>Player 1 HP</h2>
     <input type="number" id="hp1" value="200" />
@@ -84,12 +108,69 @@
     </div>
   </div>
 
+  <div class="timer-box">
+    <h2>Game Timer</h2>
+    <div id="timer">10:00</div>
+    <div id="custom-time">
+      <label>Set Minutes: <input type="number" id="minutesInput" value="10" min="1" max="60"></label>
+    </div>
+    <button class="btn" onclick="startTimer()">Start</button>
+    <button class="btn" onclick="resetTimer()">Reset</button>
+  </div>
+
+  <audio id="endSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1b2bfb3cd1.mp3?filename=game-over-arcade-6435.mp3"></audio>
+
   <script>
     function changeHP(id, value) {
       const input = document.getElementById(id);
       let hp = parseInt(input.value);
       hp = Math.max(0, hp + value);
       input.value = hp;
+
+      if (hp <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById("timer").innerText = id === 'hp1' ? "Player 2 Wins!" : "Player 1 Wins!";
+        document.getElementById("endSound").play();
+        document.getElementById("timer").classList.remove("red-alert");
+      }
+    }
+
+    let timerInterval;
+    let timeLeft = 600; // Default 10 minutes
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      const customMinutes = parseInt(document.getElementById("minutesInput").value);
+      timeLeft = customMinutes * 60;
+      document.getElementById("timer").classList.remove("red-alert");
+
+      timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById("timer").innerText = "Time's up!";
+          document.getElementById("endSound").play();
+          document.getElementById("timer").classList.remove("red-alert");
+        } else {
+          timeLeft--;
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          const timerDisplay = document.getElementById("timer");
+          timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+          if (timeLeft <= 60) {
+            timerDisplay.classList.add("red-alert");
+          }
+        }
+      }, 1000);
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      const customMinutes = parseInt(document.getElementById("minutesInput").value);
+      timeLeft = customMinutes * 60;
+      const timerDisplay = document.getElementById("timer");
+      timerDisplay.innerText = `${customMinutes}:00`;
+      timerDisplay.classList.remove("red-alert");
     }
   </script>
 </body>
