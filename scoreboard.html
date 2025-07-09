@@ -32,18 +32,19 @@
     nav a:hover {
       color: crimson;
     }
-    .scoreboard {
+    .scoreboard, .timer-box, .combo-box {
       background: #1b1b1b;
       border: 2px solid crimson;
       border-radius: 12px;
       padding: 20px;
-      max-width: 400px;
-      margin: 0 auto 40px auto;
+      max-width: 500px;
+      margin: 30px auto;
     }
     input[type="number"], select {
-      width: 60px;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       text-align: center;
+      padding: 4px;
+      margin: 5px;
     }
     .btn {
       background: crimson;
@@ -56,15 +57,6 @@
     }
     .btn:hover {
       background: darkred;
-    }
-    .timer-box, .combo-box {
-      background: #1b1b1b;
-      border: 2px solid crimson;
-      border-radius: 12px;
-      padding: 20px;
-      max-width: 500px;
-      margin: auto;
-      margin-top: 30px;
     }
     #timer {
       font-size: 2rem;
@@ -80,10 +72,6 @@
     }
     #custom-time {
       margin-top: 10px;
-    }
-    select {
-      font-size: 1rem;
-      margin: 5px;
     }
   </style>
 </head>
@@ -124,22 +112,58 @@
   </div>
 
   <div class="combo-box">
-    <h2>Test Combo Calculator</h2>
+    <h2>Combo Calculator</h2>
+    <p>Select the attacker's card and the multiplier card:</p>
     <div>
-      <label>Base Card Number: <input type="number" id="baseNum" value="6" min="1" max="11"></label>
-      <label>Suit Match: <select id="suitMatch">
-        <option value="1">No</option>
-        <option value="3">Yes</option>
-      </select></label>
-      <label>Color Match: <select id="colorMatch">
-        <option value="1">No</option>
-        <option value="2">Yes</option>
-      </select></label>
-      <label>Exact Match: <select id="exactMatch">
-        <option value="1">No</option>
-        <option value="number">Yes</option>
-      </select></label>
+      <label>Attacker Card:
+        <select id="baseNum">
+          <option value="1">A</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6" selected>6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">A (11)</option>
+        </select>
+        <select id="baseSuit">
+          <option value="heart">♥</option>
+          <option value="diamond">♦</option>
+          <option value="club">♣</option>
+          <option value="spade">♠</option>
+        </select>
+      </label>
+      <label>Multiplier Card:
+        <select id="multNum">
+          <option value="1">A</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6" selected>6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">A (11)</option>
+        </select>
+        <select id="multSuit">
+          <option value="heart">♥</option>
+          <option value="diamond">♦</option>
+          <option value="club">♣</option>
+          <option value="spade">♠</option>
+        </select>
+      </label>
     </div>
+    <p>Apply damage to:
+      <select id="targetPlayer">
+        <option value="hp2">Player 2</option>
+        <option value="hp1">Player 1</option>
+      </select>
+    </p>
     <button class="btn" onclick="calculateCombo()">Calculate & Apply</button>
     <p id="comboResult"></p>
   </div>
@@ -201,17 +225,25 @@
 
     function calculateCombo() {
       const base = parseInt(document.getElementById("baseNum").value);
-      const suit = parseInt(document.getElementById("suitMatch").value);
-      const color = parseInt(document.getElementById("colorMatch").value);
-      const exact = document.getElementById("exactMatch").value === 'number';
+      const mult = parseInt(document.getElementById("multNum").value);
+      const baseSuit = document.getElementById("baseSuit").value;
+      const multSuit = document.getElementById("multSuit").value;
+      const target = document.getElementById("targetPlayer").value;
 
-      let result = base * suit * color;
-      if (exact) result *= base;
+      const sameColor = (s1, s2) => {
+        const red = ['heart', 'diamond'];
+        return (red.includes(s1) && red.includes(s2)) || (!red.includes(s1) && !red.includes(s2));
+      };
 
-      const hp2 = document.getElementById("hp2");
-      hp2.value = Math.max(0, parseInt(hp2.value) - result);
+      let result = base;
+      if (sameColor(baseSuit, multSuit)) result *= 2;
+      if (baseSuit === multSuit) result *= 3;
+      if (base === mult) result *= base;
 
-      document.getElementById("comboResult").innerText = `Attack Power: ${result} | Player 2 HP: ${hp2.value}`;
+      const hpTarget = document.getElementById(target);
+      hpTarget.value = Math.max(0, parseInt(hpTarget.value) - result);
+
+      document.getElementById("comboResult").innerText = `Attack Power: ${result} | ${target.toUpperCase()} HP: ${hpTarget.value}`;
     }
   </script>
 </body>
