@@ -162,8 +162,8 @@ function updateHPStyle(id) {
 }
 
 function changeHP(id, value) {
-  const audio = document.getElementById('btnSound');
-  if (audio) audio.play();
+  const sound = new Audio('click.mp3');
+sound.play();
   const input = document.getElementById(id);
   let hp = parseInt(input.value);
   hp = Math.max(0, hp + value);
@@ -370,3 +370,4 @@ window.onload = () => {
 </div>
 </body>
 </html>
+
