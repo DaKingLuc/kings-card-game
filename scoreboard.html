@@ -87,18 +87,13 @@
     }
     .hp-fill {
       height: 100%;
-      background: linear-gradient(to right, lime, gold, red);
-      transition: width 0.4s ease;
+      background: lime;
+      transition: width 0.4s ease, background 0.4s ease;
     }
     .hp-label {
       margin-top: 5px;
       font-weight: bold;
       color: var(--text-color);
-    }
-    .hp-tooltip {
-      font-size: 0.8rem;
-      color: var(--text-color);
-      opacity: 0.7;
     }
     button {
       background: var(--main-accent);
@@ -125,20 +120,10 @@
       border: 1px solid var(--main-accent);
       border-radius: 6px;
     }
-    #volumeControlContainer {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--panel-bg);
-      border: 1px solid var(--main-accent);
-      padding: 10px;
-      border-radius: 10px;
+    .bottom-controls {
       display: flex;
-      align-items: center;
-      box-shadow: var(--btn-shadow);
-    }
-    #volumeSlider {
-      margin-left: 10px;
+      justify-content: space-between;
+      margin-top: 20px;
     }
   </style>
   <script>
@@ -151,8 +136,13 @@
     function updateHPBar(player) {
       const hpValue = player === 1 ? hp1 : hp2;
       const bar = document.getElementById(`hp-fill-${player}`);
-      if (bar) bar.style.width = `${(hpValue / maxHP) * 100}%`;
       const label = document.getElementById(`hp-label-${player}`);
+      if (bar) {
+        bar.style.width = `${(hpValue / maxHP) * 100}%`;
+        if (hpValue > 50) bar.style.background = 'lime';
+        else if (hpValue > 25) bar.style.background = 'gold';
+        else bar.style.background = 'red';
+      }
       if (label) label.textContent = `HP: ${hpValue} / ${maxHP}`;
     }
 
@@ -223,6 +213,11 @@
       else if (theme === 'arcane') document.body.classList.add('theme-arcane');
     }
 
+    function playSound(id) {
+      const sound = document.getElementById(id);
+      if (sound) sound.play();
+    }
+
     window.onload = () => {
       updateHPBar(1);
       updateHPBar(2);
@@ -238,13 +233,9 @@
     <a href="#">Future</a>
   </nav>
 
-  <div id="volumeControlContainer">
-    <span>🔊</span>
-    <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="1">
-  </div>
-
-  <div style="position: fixed; bottom: 20px; left: 20px;">
-    <select onchange="toggleTheme(this.value)">
+  <div style="margin-bottom: 20px;">
+    <label for="themeSelector">Theme:</label>
+    <select id="themeSelector" onchange="toggleTheme(this.value)">
       <option value="">Default</option>
       <option value="gold">Gold</option>
       <option value="arcane">Arcane</option>
@@ -254,13 +245,13 @@
   <div class="main-container">
     <div class="scoreboard">
       <h2>Player 1</h2>
-      <button onclick="changeHP(1, -10)">-10</button>
+      <button onclick="changeHP(1, -10); playSound('lighthit')">-10</button>
       <button onclick="changeHP(1, 10)">+10</button>
       <div class="hp-bar"><div class="hp-fill" id="hp-fill-1"></div></div>
       <div class="hp-label" id="hp-label-1"></div>
 
       <h2>Player 2</h2>
-      <button onclick="changeHP(2, -10)">-10</button>
+      <button onclick="changeHP(2, -10); playSound('lighthit')">-10</button>
       <button onclick="changeHP(2, 10)">+10</button>
       <div class="hp-bar"><div class="hp-fill" id="hp-fill-2"></div></div>
       <div class="hp-label" id="hp-label-2"></div>
@@ -268,21 +259,47 @@
 
     <div class="combo-box">
       <h2>Combo Calculator</h2>
-      <select id="baseNum">${[...Array(10).keys()].map(i => `<option value="${i+2}">${i+2}</option>`).join('')}</select>
-      <select id="baseSuit">
-        <option value="heart">Hearts</option>
-        <option value="diamond">Diamonds</option>
-        <option value="club">Clubs</option>
-        <option value="spade">Spades</option>
-      </select>
+      <label>Player 1 Card:
+        <select id="baseNum">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">A</option>
+        </select>
+        <select id="baseSuit">
+          <option value="heart">Hearts</option>
+          <option value="diamond">Diamonds</option>
+          <option value="club">Clubs</option>
+          <option value="spade">Spades</option>
+        </select>
+      </label>
       <br>
-      <select id="multNum">${[...Array(10).keys()].map(i => `<option value="${i+2}">${i+2}</option>`).join('')}</select>
-      <select id="multSuit">
-        <option value="heart">Hearts</option>
-        <option value="diamond">Diamonds</option>
-        <option value="club">Clubs</option>
-        <option value="spade">Spades</option>
-      </select>
+      <label>Player 1 Multiplier:
+        <select id="multNum">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">A</option>
+        </select>
+        <select id="multSuit">
+          <option value="heart">Hearts</option>
+          <option value="diamond">Diamonds</option>
+          <option value="club">Clubs</option>
+          <option value="spade">Spades</option>
+        </select>
+      </label>
       <br>
       <button onclick="calculateCombo()">Calculate</button>
       <div id="comboResult"></div>
@@ -294,12 +311,21 @@
     <ul id="roundLog" style="text-align: left; max-height: 200px; overflow-y: auto; background: var(--panel-bg); padding: 10px; border-radius: 10px; border: 1px solid var(--main-accent);"></ul>
   </div>
 
-  <div style="margin-top: 40px;">
+  <div style="margin-top: 40px; background: var(--panel-bg); padding: 20px; border-radius: 10px; border: 2px solid var(--main-accent); max-width: 500px; margin-left: auto; margin-right: auto;">
     <h2>Game Timer</h2>
     <input id="minutesInput" type="number" value="10" min="1" max="60"> minutes
     <div id="timer">10:00</div>
     <button onclick="startTimer()">Start</button>
     <button onclick="resetTimer()">Reset</button>
   </div>
+
+  <div style="margin-top: 20px;">
+    <label for="volumeSlider">Volume:</label>
+    <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="1" onchange="document.querySelectorAll('audio').forEach(a => a.volume = this.value)">
+  </div>
+
+  <audio id="lighthit" src="lighthit.mp3" preload="auto"></audio>
+  <audio id="heavyhit" src="heavyhit.mp3" preload="auto"></audio>
+  <audio id="revive" src="revive.mp3" preload="auto"></audio>
 </body>
 </html>
