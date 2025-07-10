@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,28 @@
   <title>Scoreboard | KINGS</title>
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Segoe+UI&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --text-color: #f5f5f5;
+      --main-accent: crimson;
+      --bg-color: #121212;
+      --panel-bg: #1b1b1b;
+    }
+    body.theme-gold {
+      --text-color: #b38900;
+      --main-accent: gold;
+      --bg-color: #1a1a0f;
+      --panel-bg: #2a250f;
+    }
+    body.theme-arcane {
+      --text-color: #1bc0c0;
+      --main-accent: cyan;
+      --bg-color: #0f1a1a;
+      --panel-bg: #0f2a2a;
+    }
     body {
+      transition: background 0.4s ease, color 0.4s ease;
+      color: var(--text-color, #f5f5f5);
+      background: var(--bg-color);
       background: #121212;
       color: #f5f5f5;
       font-family: 'Segoe UI', sans-serif;
@@ -13,7 +35,7 @@
       padding: 40px;
     }
     h1, h2 {
-      color: crimson;
+      color: var(--main-accent);
     }
     nav {
       display: flex;
@@ -23,14 +45,14 @@
       margin-bottom: 30px;
     }
     nav a {
-      color: #f5f5f5;
+      color: var(--text-color);
       text-decoration: none;
       margin: 0 15px;
       font-weight: bold;
       font-family: 'Segoe UI', sans-serif;
     }
     nav a:hover {
-      color: crimson;
+      color: var(--main-accent);
     }
     .main-container {
       display: flex;
@@ -40,8 +62,8 @@
       margin-top: 20px;
     }
     .scoreboard, .combo-box {
-      background: #1b1b1b;
-      border: 2px solid crimson;
+      background: var(--panel-bg);
+      border: 2px solid var(--main-accent);
       border-radius: 12px;
       padding: 20px;
       flex: 1 1 400px;
@@ -55,6 +77,17 @@
       margin: 0 auto 30px auto;
       max-width: 500px;
     }
+    .slider-container {
+      margin: 20px auto;
+      max-width: 300px;
+    }
+    .slider-label {
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+    #volumeSlider {
+      width: 100%;
+    }
     input[type="number"], select {
       font-size: 1.1rem;
       text-align: center;
@@ -63,7 +96,10 @@
       transition: all 0.3s ease-in-out;
     }
     .btn {
-      background: crimson;
+  box-shadow: 0 0 6px var(--main-accent);
+  transition: all 0.2s ease-in-out;
+
+      background: var(--main-accent);
       border: none;
       padding: 10px 20px;
       color: white;
@@ -72,7 +108,9 @@
       cursor: pointer;
     }
     .btn:hover {
-      background: darkred;
+  transform: scale(1.05);
+
+      background: var(--main-accent); opacity: 0.8;
     }
     #timer {
       font-size: 2rem;
@@ -117,23 +155,70 @@
     .combo-flash {
       animation: comboFlash 0.6s ease-out;
     }
-
     @keyframes comboFlash {
       0% { background-color: rgba(255, 255, 255, 0.1); transform: scale(1); }
       50% { background-color: rgba(255, 255, 255, 0.3); transform: scale(1.05); }
       100% { background-color: transparent; transform: scale(1); }
     }
-
     .log-entry {
       animation: slideIn 0.4s ease-out;
     }
-
     @keyframes slideIn {
       0% { opacity: 0; transform: translateX(-20px); }
       100% { opacity: 1; transform: translateX(0); }
     }
-  </style>
-  <!-- scripts and full functional body content will be included here -->
+select option {
+  font-family: 'Segoe UI', sans-serif;
+}
+select option[value="heart"],
+select option[value="diamond"] {
+  color: crimson;
+}
+select option[value="club"],
+select option[value="spade"] {
+  color: #ddd;
+}
+.card-picker {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.suit-select {
+  font-size: 1.3rem;
+  padding: 4px 8px;
+  background: var(--panel-bg);
+  border: 1px solid var(--main-accent);
+  color: var(--main-accent);
+  border-radius: 6px;
+}
+</style>
+  <script>
+    let sfxVolume = 1;
+    function updateAudioVolume() {
+      document.querySelectorAll('audio').forEach(audio => {
+        audio.volume = sfxVolume;
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+  const volumeBox = document.getElementById('volumeControl');
+  window.toggleSlider = () => {
+    const isOpen = volumeBox.style.maxHeight && volumeBox.style.maxHeight !== '0px';
+    volumeBox.style.maxHeight = isOpen ? '0px' : '100px';
+};
+      const volumeSlider = document.getElementById('volumeSlider');
+      if (volumeSlider) {
+        volumeSlider.addEventListener('input', () => {
+          sfxVolume = parseFloat(volumeSlider.value);
+          updateAudioVolume();
+        });
+        updateAudioVolume();
+      }
+    });
+  function changeTheme(theme) {
+  document.body.className = theme === 'default' ? '' : `theme-${theme}`;
+}
+</script>
 </head>
 <body>
   <nav>
@@ -141,143 +226,337 @@
     <a href="rules.html">Rules</a>
     <a href="updates.html">Updates</a>
     <a href="future.html">Future</a>
+    
+  </nav>
+  <div class="slider-container" style="position: fixed; bottom: 20px; left: 20px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px var(--main-accent); font-family: 'Segoe UI', sans-serif;">
+    <label for="themePicker" class="slider-label">🎨 Theme</label>
+    <select id="themePicker" onchange="changeTheme(this.value)">
+      <option value="default">Default</option>
+      <option value="gold">Royal Gold</option>
+      <option value="arcane">Arcane Blue</option>
+    </select>
+  </div>
+    
   </nav>
 
-  <div class="combo-box">
-  <h2>Combo Calculator</h2>
-
-  <h3>Player 1 Base Card</h3>
-  <div class="card-select"><select id="baseNum">
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
-  
-</select>
-<select id="baseSuit">
-  <option value="heart">♥</option>
-  <option value="diamond">♦</option>
-  <option value="club">♣</option>
-  <option value="spade">♠</option>
-</select></div>
-<h3>Player 1 Multiplier</h3>
-  <div class="card-select"><select id="multNum">
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
-  <option value="11">A</option>
-</select>
-<select id="multSuit">
-  <option value="heart">♥</option>
-  <option value="diamond">♦</option>
-  <option value="club">♣</option>
-  <option value="spade">♠</option>
-</select></div>
-<h3>Player 2 Base Card</h3>
-  <div class="card-select"><select id="baseNum2">
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
-  
-  <option value="14">A</option>
-</select>
-<select id="baseSuit2">
-  <option value="heart">♥</option>
-  <option value="diamond">♦</option>
-  <option value="club">♣</option>
-  <option value="spade">♠</option>
-</select></div>
-<h3>Player 2 Multiplier</h3>
-  <div class="card-select"><select id="multNum2">
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
-  
-  
-  
-  <option value="14">A</option>
-</select>
-<select id="multSuit2">
-  <option value="heart">♥</option>
-  <option value="diamond">♦</option>
-  <option value="club">♣</option>
-  <option value="spade">♠</option>
-</select></div>
-
-  <button class="btn" onclick="calculateCombo()">Calculate</button>
-  <div id="comboResult" style="margin-top: 10px;"></div>
+  <div class="slider-container" style="position: fixed; bottom: 20px; right: 20px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px var(--main-accent); font-family: 'Segoe UI', sans-serif; transition: all 0.4s ease;">
+  <button class="btn" onclick="toggleSlider()">🔊 Volume</button>
+  <div id="volumeControl" style="margin-top: 10px; overflow: hidden; max-height: 0; transition: max-height 0.4s ease;">
+    <div class="slider-label">🎚 SFX Volume</div>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+  </div>
 </div>
 
-<input type="hidden" id="baseNum" value="2">
-<input type="hidden" id="baseSuit" value="heart">
-<input type="hidden" id="multNum" value="2">
-<input type="hidden" id="multSuit" value="heart">
-<input type="hidden" id="baseNum2" value="2">
-<input type="hidden" id="baseSuit2" value="heart">
-<input type="hidden" id="multNum2" value="2">
-<input type="hidden" id="multSuit2" value="heart">
+  <div class="timer-box" style="background: var(--panel-bg); border: 2px solid var(--main-accent);">
+    <h2>Game Timer</h2>
+    <input id="minutesInput" type="number" value="10" min="1" max="60"> minutes
+    <div id="timer">10:00</div>
+    <button class="btn" onclick="startTimer()">Start</button>
+    <button class="btn" onclick="resetTimer()">Reset</button>
+  </div>
 
-<style>
-  .card-select select {
-    font-size: 1rem;
-    padding: 6px;
-    margin: 4px;
-    border: 2px solid crimson;
-    border-radius: 6px;
-    background-color: #1b1b1b;
-    color: #f5f5f5;
-  }
-  .mini-card {
-    width: 40px;
-    height: 60px;
-    background-color: #222;
-    color: white;
-    border: 2px solid crimson;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  .mini-card.selected {
-    background-color: crimson;
-    color: #fff;
-    border-color: gold;
-  }
-</style>
+  <div class="main-container">
+    <div class="scoreboard">
+      <h2>Player 1 HP</h2>
+      <input id="hp1" type="number" value="200" min="0">
+      <div>
+        <button class="btn" onclick="changeHP('hp1', -10)">-10</button>
+        <button class="btn" onclick="changeHP('hp1', 10)">+10</button>
+      </div>
+
+      <h2>Player 2 HP</h2>
+      <input id="hp2" type="number" value="200" min="0">
+      <div>
+        <button class="btn" onclick="document.getElementById('hp1').value = 200; updateHPStyle('hp1'); document.getElementById('hp2').value = 200; updateHPStyle('hp2'); playReviveSound();">Reset HP</button><br><br>
+        <button class="btn" onclick="changeHP('hp2', -10)">-10</button>
+        <button class="btn" onclick="changeHP('hp2', 10)">+10</button>
+      </div>
+    </div>
+
+    <div class="combo-box">
+      <h2>Combo Calculator</h2>
+      <label>Player 1 Card:
+        <div class="card-picker">
+  <label>Player 1 Card:
+    <select id="baseNum">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">A</option>
+    </select>
+    <select id="baseSuit" class="suit-select">
+      <option value="heart">♥</option>
+      <option value="diamond">♦</option>
+      <option value="club">♣</option>
+      <option value="spade">♠</option>
+    </select>
+  </label>
+</div>
+      </label>
+      <br>
+      <label>Player 1 Multiplier:
+        <div class="card-picker">
+  <label>Player 1 Multiplier:
+    <select id="multNum">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">A</option>
+    </select>
+    <select id="multSuit" class="suit-select">
+      <option value="heart">♥</option>
+      <option value="diamond">♦</option>
+      <option value="club">♣</option>
+      <option value="spade">♠</option>
+    </select>
+  </label>
+</div>
+      </label>
+      <br><br>
+      <label>Player 2 Card:
+        <div class="card-picker">
+  <label>Player 2 Card:
+    <select id="baseNum2">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">A</option>
+    </select>
+    <select id="baseSuit2" class="suit-select">
+      <option value="heart">♥</option>
+      <option value="diamond">♦</option>
+      <option value="club">♣</option>
+      <option value="spade">♠</option>
+    </select>
+  </label>
+</div>
+      </label>
+      <br>
+      <label>Player 2 Multiplier:
+        <div class="card-picker">
+  <label>Player 2 Multiplier:
+    <select id="multNum2">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">A</option>
+    </select>
+    <select id="multSuit2" class="suit-select">
+      <option value="heart">♥</option>
+      <option value="diamond">♦</option>
+      <option value="club">♣</option>
+      <option value="spade">♠</option>
+    </select>
+  </label>
+</div>
+      </label>
+      <br><br>
+      <button class="btn" onclick="calculateCombo()">Calculate</button>
+      <div id="comboResult" style="margin-top: 10px;"></div>
+    </div>
+  </div>
+
+  <div class="log-box" style="margin-top: 30px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 20px; max-width: 1040px; margin-left: auto; margin-right: auto;">
+    <h2>Round Log</h2>
+    <ul id="roundLog" style="text-align: left; max-height: 200px; overflow-y: auto;"></ul>
+  </div>
+
+  <audio id="lighthit" preload="auto" src="lighthit.mp3"></audio>
+  <audio id="heavyhit" preload="auto" src="heavyhit.mp3"></audio>
+  <audio id="revive" preload="auto" src="revive.mp3"></audio>
+
   <script>
-function convertFaceCard(val) {
-  if (val === 'J') return 11;
-  if (val === 'Q') return 12;
-  if (val === 'K') return 13;
-  if (val === 'A') return 14;
-  return val;
+let timerInterval;
+function startTimer() {
+  console.log("Timer started");
+  clearInterval(timerInterval);
+  let totalSeconds = parseInt(document.getElementById("minutesInput").value) * 60;
+  const timerDisplay = document.getElementById("timer");
+
+  const updateDisplay = () => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    if (totalSeconds <= 60) {
+      timerDisplay.classList.add("red-alert");
+    }
+  };
+
+  updateDisplay();
+  timerInterval = setInterval(() => {
+    if (totalSeconds > 0) {
+      totalSeconds--;
+      updateDisplay();
+    } else {
+      console.log("Timer ended");
+      clearInterval(timerInterval);
+    }
+  }, 1000);
+}
+
+function resetTimer() {
+  console.log("Timer reset");
+  clearInterval(timerInterval);
+  const minutes = parseInt(document.getElementById("minutesInput").value);
+  document.getElementById("timer").textContent = `${minutes}:00`;
+  document.getElementById("timer").classList.remove("red-alert");
+}
+
+function updateHPStyle(id) {
+  const el = document.getElementById(id);
+  const hp = parseInt(el.value);
+  console.log(`Updating HP style for ${id} with value ${hp}`);
+  el.classList.remove('hp-green', 'hp-yellow', 'hp-red');
+  if (hp > 50) {
+    el.classList.add('hp-green');
+  } else if (hp > 25) {
+    el.classList.add('hp-yellow');
+  } else {
+    el.classList.add('hp-red');
+  }
+}
+
+function changeHP(id, value) {
+  const sound = new Audio('click.mp3');
+  sound.volume = sfxVolume;
+  sound.play();
+  const input = document.getElementById(id);
+  let hp = parseInt(input.value);
+  hp = Math.max(0, hp + value);
+  input.value = hp;
+  updateHPStyle(id);
+  console.log(`Changed HP for ${id} by ${value}, new value: ${hp}`);
+}
+
+function calculateCombo() {
+  console.log("Calculating combo");
+  const lightHit = document.getElementById('lighthit');
+  const heavyHit = document.getElementById('heavyhit');
+  const base = parseInt(document.getElementById("baseNum").value);
+  const mult = parseInt(document.getElementById("multNum").value);
+  const baseSuit = document.getElementById("baseSuit").value;
+  const multSuit = document.getElementById("multSuit").value;
+
+  const base2 = parseInt(document.getElementById("baseNum2").value);
+  const mult2 = parseInt(document.getElementById("multNum2").value);
+  const baseSuit2 = document.getElementById("baseSuit2").value;
+  const multSuit2 = document.getElementById("multSuit2").value;
+
+  const sameColor = (s1, s2) => {
+    const red = ['heart', 'diamond'];
+    return (red.includes(s1) && red.includes(s2)) || (!red.includes(s1) && !red.includes(s2));
+  };
+
+  let multiplier1 = 1;
+  if (sameColor(baseSuit, multSuit)) multiplier1 *= 2;
+  if (baseSuit === multSuit) multiplier1 *= 3;
+  if (base === mult) multiplier1 *= base;
+  const power1 = base * multiplier1;
+
+  let multiplier2 = 1;
+  if (sameColor(baseSuit2, multSuit2)) multiplier2 *= 2;
+  if (baseSuit2 === multSuit2) multiplier2 *= 3;
+  if (base2 === mult2) multiplier2 *= base2;
+  const power2 = base2 * multiplier2;
+
+  console.log(`P1: base=${base}, mult=${mult}, power=${power1}`);
+  console.log(`P2: base=${base2}, mult=${mult2}, power=${power2}`);
+
+  const hp1 = document.getElementById("hp1");
+  const hp2 = document.getElementById("hp2");
+
+  const timerDisplay = document.getElementById("timer").textContent;
+  const timeStr = timerDisplay;
+  roundCount = (typeof roundCount === 'undefined') ? 1 : roundCount + 1;
+  let resultText = `Player 1 Total: ${power1}, Player 2 Total: ${power2}.`;
+  if (power1 > power2) {
+    const damage = power1 - power2;
+    hp2.value = Math.max(0, hp2.value - damage);
+    updateHPStyle('hp2');
+    resultText += ` Player 2 takes ${damage} damage.`;
+    if (damage > 50 && heavyHit) {
+      heavyHit.volume = sfxVolume;
+      heavyHit.play();
+    } else if (lightHit) {
+      lightHit.volume = sfxVolume;
+      lightHit.play();
+    }
+    applyShake('hp1', Math.min(3, Math.ceil(damage / 50)));
+    applyShake('hp2', Math.min(3, Math.ceil(damage / 50)));
+  } else if (power2 > power1) {
+    const damage = power2 - power1;
+    hp1.value = Math.max(0, hp1.value - damage);
+    updateHPStyle('hp1');
+    resultText += ` Player 1 takes ${damage} damage.`;
+    if (damage > 50 && heavyHit) {
+      heavyHit.volume = sfxVolume;
+      heavyHit.play();
+    } else if (lightHit) {
+      lightHit.volume = sfxVolume;
+      lightHit.play();
+    }
+  } else {
+    resultText += " It's a tie. No damage dealt.";
+  }
+
+  const comboBox = document.getElementById("comboResult");
+  comboBox.innerText = resultText;
+  if (power1 !== power2 && Math.abs(power1 - power2) > 50) {
+    comboBox.classList.add("combo-flash");
+    setTimeout(() => comboBox.classList.remove("combo-flash"), 600);
+  }
+
+  const log = document.getElementById("roundLog");
+  const entry = document.createElement("li");
+  entry.innerText = `Round ${roundCount} @ ${timeStr} — P1: ${base} of ${baseSuit}, Mult: ${mult} of ${multSuit} | P2: ${base2} of ${baseSuit2}, Mult: ${mult2} of ${multSuit2} => ${resultText}`;
+  entry.classList.add("log-entry");
+  log.appendChild(entry);
+  log.scrollTop = log.scrollHeight;
+  console.log(`Logged round ${roundCount}`);
+}
+
+window.onload = () => {
+  console.log("Page loaded");
+  updateHPStyle('hp1');
+  updateHPStyle('hp2');
+};
+
+function playReviveSound() {
+  const revive = document.getElementById("revive");
+  if (revive) {
+    revive.volume = sfxVolume;
+    revive.play();
+  }
+}
+
+function applyShake(id, intensity = 1) {
+  const el = document.getElementById(id);
+  el.classList.add("shake");
+  setTimeout(() => el.classList.remove("shake"), 500 * intensity);
 }
 </script>
 </body>
