@@ -204,7 +204,10 @@ function calculateCombo() {
   const hp1 = document.getElementById("hp1");
   const hp2 = document.getElementById("hp2");
 
-  let resultText = `Player 1 Total: ${power1}, Player 2 Total: ${power2}. `;
+  const timerDisplay = document.getElementById("timer").textContent;
+  const timeStr = timerDisplay;
+  roundCount = (typeof roundCount === 'undefined') ? 1 : roundCount + 1;
+  let resultText = `Player 1 Total: ${power1}, Player 2 Total: ${power2}.`;
   if (power1 > power2) {
     const damage = power1 - power2;
     hp2.value = Math.max(0, parseInt(hp2.value) - damage);
@@ -224,6 +227,12 @@ function calculateCombo() {
   }
 
   document.getElementById("comboResult").innerText = resultText;
+
+  const log = document.getElementById("roundLog");
+  const entry = document.createElement("li");
+  entry.innerText = `Round ${roundCount} @ ${timeStr} — P1: ${base} of ${baseSuit}, Mult: ${mult} of ${multSuit} | P2: ${base2} of ${baseSuit2}, Mult: ${mult2} of ${multSuit2} => ${resultText}`;
+  log.appendChild(entry);
+  log.scrollTop = log.scrollHeight;
 }
 
 window.onload = () => {
@@ -367,5 +376,9 @@ window.onload = () => {
     </div>
   </div>
 
+  <div class="log-box" style="margin-top: 30px; background: #1b1b1b; border: 2px solid crimson; border-radius: 12px; padding: 20px; max-width: 1040px; margin-left: auto; margin-right: auto;">
+    <h2>Round Log</h2>
+    <ul id="roundLog" style="text-align: left; max-height: 200px; overflow-y: auto;"></ul>
+  </div>
 </body>
 </html>
