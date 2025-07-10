@@ -147,16 +147,85 @@
   <h2>Combo Calculator</h2>
 
   <h3>Player 1 Base Card</h3>
-  <div id="p1BaseCard" class="card-grid"></div>
-
-  <h3>Player 1 Multiplier</h3>
-  <div id="p1MultCard" class="card-grid"></div>
-
-  <h3>Player 2 Base Card</h3>
-  <div id="p2BaseCard" class="card-grid"></div>
-
-  <h3>Player 2 Multiplier</h3>
-  <div id="p2MultCard" class="card-grid"></div>
+  <div class="card-select"><select id="baseNum">
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  
+</select>
+<select id="baseSuit">
+  <option value="heart">♥</option>
+  <option value="diamond">♦</option>
+  <option value="club">♣</option>
+  <option value="spade">♠</option>
+</select></div>
+<h3>Player 1 Multiplier</h3>
+  <div class="card-select"><select id="multNum">
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  <option value="11">A</option>
+</select>
+<select id="multSuit">
+  <option value="heart">♥</option>
+  <option value="diamond">♦</option>
+  <option value="club">♣</option>
+  <option value="spade">♠</option>
+</select></div>
+<h3>Player 2 Base Card</h3>
+  <div class="card-select"><select id="baseNum2">
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  
+  <option value="14">A</option>
+</select>
+<select id="baseSuit2">
+  <option value="heart">♥</option>
+  <option value="diamond">♦</option>
+  <option value="club">♣</option>
+  <option value="spade">♠</option>
+</select></div>
+<h3>Player 2 Multiplier</h3>
+  <div class="card-select"><select id="multNum2">
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  
+  
+  
+  <option value="14">A</option>
+</select>
+<select id="multSuit2">
+  <option value="heart">♥</option>
+  <option value="diamond">♦</option>
+  <option value="club">♣</option>
+  <option value="spade">♠</option>
+</select></div>
 
   <button class="btn" onclick="calculateCombo()">Calculate</button>
   <div id="comboResult" style="margin-top: 10px;"></div>
@@ -172,12 +241,14 @@
 <input type="hidden" id="multSuit2" value="heart">
 
 <style>
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 6px;
-    justify-items: center;
-    margin-bottom: 15px;
+  .card-select select {
+    font-size: 1rem;
+    padding: 6px;
+    margin: 4px;
+    border: 2px solid crimson;
+    border-radius: 6px;
+    background-color: #1b1b1b;
+    color: #f5f5f5;
   }
   .mini-card {
     width: 40px;
@@ -201,34 +272,6 @@
   }
 </style>
   <script>
-    const suits = ['heart', 'diamond', 'club', 'spade'];
-const values = [2,3,4,5,6,7,8,9,10,'J','Q','K','A'];
-const suitSymbols = {
-  heart: '♥',
-  diamond: '♦',
-  club: '♣',
-  spade: '♠'
-};
-
-function createMiniCards(containerId, valueId, suitId) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-  values.forEach(value => {
-    suits.forEach(suit => {
-      const card = document.createElement('div');
-      card.className = 'mini-card';
-      card.innerHTML = `<div>${value}</div><div>${suitSymbols[suit]}</div>`;
-      card.onclick = () => {
-        document.getElementById(valueId).value = convertFaceCard(value);
-        document.getElementById(suitId).value = suit;
-        Array.from(container.children).forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-      };
-      container.appendChild(card);
-    });
-  });
-}
-
 function convertFaceCard(val) {
   if (val === 'J') return 11;
   if (val === 'Q') return 12;
@@ -236,13 +279,6 @@ function convertFaceCard(val) {
   if (val === 'A') return 14;
   return val;
 }
-
-window.onload = () => {
-  createMiniCards('p1BaseCard', 'baseNum', 'baseSuit');
-  createMiniCards('p1MultCard', 'multNum', 'multSuit');
-  createMiniCards('p2BaseCard', 'baseNum2', 'baseSuit2');
-  createMiniCards('p2MultCard', 'multNum2', 'multSuit2');
-};
-  </script>
+</script>
 </body>
 </html>
