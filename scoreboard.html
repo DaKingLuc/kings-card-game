@@ -5,7 +5,23 @@
   <title>Scoreboard | KINGS</title>
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Segoe+UI&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --main-accent: crimson;
+      --bg-color: #121212;
+      --panel-bg: #1b1b1b;
+    }
+    body.theme-gold {
+      --main-accent: gold;
+      --bg-color: #1a1a0f;
+      --panel-bg: #2a250f;
+    }
+    body.theme-arcane {
+      --main-accent: cyan;
+      --bg-color: #0f1a1a;
+      --panel-bg: #0f2a2a;
+    }
     body {
+      background: var(--bg-color);
       background: #121212;
       color: #f5f5f5;
       font-family: 'Segoe UI', sans-serif;
@@ -40,8 +56,8 @@
       margin-top: 20px;
     }
     .scoreboard, .combo-box {
-      background: #1b1b1b;
-      border: 2px solid crimson;
+      background: var(--panel-bg);
+      border: 2px solid var(--main-accent);
       border-radius: 12px;
       padding: 20px;
       flex: 1 1 400px;
@@ -74,10 +90,10 @@
       transition: all 0.3s ease-in-out;
     }
     .btn {
-  box-shadow: 0 0 6px crimson;
+  box-shadow: 0 0 6px var(--main-accent);
   transition: all 0.2s ease-in-out;
 
-      background: crimson;
+      background: var(--main-accent);
       border: none;
       padding: 10px 20px;
       color: white;
@@ -88,7 +104,7 @@
     .btn:hover {
   transform: scale(1.05);
 
-      background: darkred;
+      background: var(--main-accent); opacity: 0.8;
     }
     #timer {
       font-size: 2rem;
@@ -156,7 +172,7 @@
     document.addEventListener('DOMContentLoaded', () => {
   const volumeBox = document.getElementById('volumeControl');
   window.toggleSlider = () => {
-    volumeBox.style.display = volumeBox.style.display === 'none' ? 'block' : 'none';
+    volumeBox.style.maxHeight = volumeBox.style.maxHeight ? null : '100px';
   };
       const volumeSlider = document.getElementById('volumeSlider');
       if (volumeSlider) {
@@ -167,20 +183,24 @@
         updateAudioVolume();
       }
     });
-  </script>
+  function changeTheme(theme) {
+  document.body.className = theme === 'default' ? '' : `theme-${theme}`;
+}
+</script>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="rules.html">Rules</a>
-    <a href="updates.html">Updates</a>
-    <a href="future.html">Future</a>
+  $1
+    <select id="themePicker" class="btn" style="margin-left: 10px;" onchange="changeTheme(this.value)">
+      <option value="default">Default</option>
+      <option value="gold">Royal Gold</option>
+      <option value="arcane">Arcane Blue</option>
+    </select>
   </nav>
 
-  <div class="slider-container" style="position: fixed; bottom: 20px; right: 20px; background: #1b1b1b; border: 2px solid crimson; border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px crimson;">
+  <div class="slider-container" style="position: fixed; bottom: 20px; right: 20px; background: #1b1b1b; border: 2px solid crimson; border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px crimson; font-family: 'Segoe UI', sans-serif;">
   <button class="btn" onclick="toggleSlider()">🔊 Volume</button>
-  <div id="volumeControl" style="margin-top: 10px; display: none;">
-    <div class="slider-label">SFX Volume</div>
+  <div id="volumeControl" style="margin-top: 10px; overflow: hidden; max-height: 0; transition: max-height 0.4s ease;">
+    <div class="slider-label">🎚 SFX Volume</div>
     <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
   </div>
 </div>
