@@ -192,7 +192,24 @@ select option[value="spade"] {
   border: 1px solid var(--main-accent);
   color: var(--main-accent);
   border-radius: 6px;
+}.hp-bar {
+  width: 100%;
+  height: 16px;
+  background: #222;
+  border-radius: 10px;
+  border: 1px solid var(--main-accent);
+  margin-top: 5px;
+  overflow: hidden;
+  box-shadow: inset 0 0 4px var(--main-accent);
 }
+.hp-fill {
+  height: 100%;
+  width: 100%;
+  background: lime;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+</style>
+
 </style>
   <script>
     let sfxVolume = 1;
@@ -260,14 +277,20 @@ select option[value="spade"] {
     <div class="scoreboard">
       <h2>Player 1 HP</h2>
       <input id="hp1" type="number" value="200" min="0">
-      <div>
+      <div class="hp-bar">
+  <div class="hp-fill" id="hpFill1"></div>
+</div>
+
         <button class="btn" onclick="changeHP('hp1', -10)">-10</button>
         <button class="btn" onclick="changeHP('hp1', 10)">+10</button>
       </div>
 
       <h2>Player 2 HP</h2>
       <input id="hp2" type="number" value="200" min="0">
-      <div>
+      <div class="hp-bar">
+  <div class="hp-fill" id="hpFill2"></div>
+</div>
+
         <button class="btn" onclick="document.getElementById('hp1').value = 200; updateHPStyle('hp1'); document.getElementById('hp2').value = 200; updateHPStyle('hp2'); playReviveSound();">Reset HP</button><br><br>
         <button class="btn" onclick="changeHP('hp2', -10)">-10</button>
         <button class="btn" onclick="changeHP('hp2', 10)">+10</button>
@@ -430,16 +453,20 @@ function resetTimer() {
 function updateHPStyle(id) {
   const el = document.getElementById(id);
   const hp = parseInt(el.value);
-  console.log(`Updating HP style for ${id} with value ${hp}`);
-  el.classList.remove('hp-green', 'hp-yellow', 'hp-red');
-  if (hp > 50) {
-    el.classList.add('hp-green');
-  } else if (hp > 25) {
-    el.classList.add('hp-yellow');
+  const fill = document.getElementById(id === 'hp1' ? 'hpFill1' : 'hpFill2');
+  const max = 200;
+  const percent = Math.max(0, Math.min(100, (hp / max) * 100));
+  fill.style.width = `${percent}%`;
+
+  if (percent <= 25) {
+    fill.style.background = 'red';
+  } else if (percent <= 50) {
+    fill.style.background = 'gold';
   } else {
-    el.classList.add('hp-red');
+    fill.style.background = 'lime';
   }
 }
+
 
 function changeHP(id, value) {
   const sound = new Audio('click.mp3');
