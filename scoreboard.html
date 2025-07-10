@@ -242,6 +242,8 @@ function calculateCombo() {
     resultText += ` Player 2 takes ${damage} damage.`;
     if (damage > 50 && heavyHit) heavyHit.play();
     else if (lightHit) lightHit.play();
+    applyShake('hp1', Math.min(3, Math.ceil(damage / 50)));
+    applyShake('hp2', Math.min(3, Math.ceil(damage / 50)));
   } else if (power2 > power1) {
     const damage = power2 - power1;
     hp1.value = Math.max(0, hp1.value - damage);
@@ -274,9 +276,20 @@ window.onload = () => {
   updateHPStyle('hp1');
   updateHPStyle('hp2');
 };
+function playReviveSound() {
+  const revive = document.getElementById("revive");
+  if (revive) revive.play();
+}
+
+function applyShake(id, intensity = 1) {
+  const el = document.getElementById(id);
+  el.classList.add("shake");
+  setTimeout(() => el.classList.remove("shake"), 500 * intensity);
+}
 </script>
 <audio id="lighthit" preload="auto" src="lighthit.mp3"></audio>
 <audio id="heavyhit" preload="auto" src="heavyhit.mp3"></audio>
+<audio id="revive" preload="auto" src="revive.mp3"></audio>
 </head>
 <body>
   <nav>
@@ -306,7 +319,7 @@ window.onload = () => {
       <h2>Player 2 HP</h2>
       <input id="hp2" type="number" value="200" min="0">
       <div>
-        <button class="btn" onclick="document.getElementById('hp1').value = 200; updateHPStyle('hp1'); document.getElementById('hp2').value = 200; updateHPStyle('hp2');">Reset HP</button><br><br>
+        <button class="btn" onclick="document.getElementById('hp1').value = 200; updateHPStyle('hp1'); document.getElementById('hp2').value = 200; updateHPStyle('hp2'); playReviveSound();">Reset HP</button><br><br>
         <button class="btn" onclick="changeHP('hp2', -10)">-10</button>
         <button class="btn" onclick="changeHP('hp2', 10)">+10</button>
       </div>
