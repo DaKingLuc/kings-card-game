@@ -177,6 +177,20 @@ select option[value="club"],
 select option[value="spade"] {
   color: #ddd;
 }
+.card-picker {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.suit-select {
+  font-size: 1.3rem;
+  padding: 4px 8px;
+  background: var(--panel-bg);
+  border: 1px solid var(--main-accent);
+  color: var(--main-accent);
+  border-radius: 6px;
+}
 </style>
   <script>
     let sfxVolume = 1;
@@ -261,87 +275,103 @@ select option[value="spade"] {
     <div class="combo-box">
       <h2>Combo Calculator</h2>
       <label>Player 1 Card:
-        <select id="baseNum">
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">A</option>
-        </select>
-        <select id="baseSuit">
-  <option value="heart">♥ Heart</option>
-  <option value="diamond">♦ Diamond</option>
-  <option value="club">♣ Club</option>
-  <option value="spade">♠ Spade</option>
-</select>
+        <div class="card-picker">
+  <label>Player 1 Card:
+    <select id="baseNum">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">A</option>
+    </select>
+    <select id="baseSuit" class="suit-select">
+      <option value="heart">♥</option>
+      <option value="diamond">♦</option>
+      <option value="club">♣</option>
+      <option value="spade">♠</option>
+    </select>
+  </label>
+</div>
       </label>
       <br>
       <label>Player 1 Multiplier:
-        <select id="multNum">
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">A</option>
-        </select>
-        <select id="multSuit">
-  <option value="heart">♥ Heart</option>
-  <option value="diamond">♦ Diamond</option>
-  <option value="club">♣ Club</option>
-  <option value="spade">♠ Spade</option>
-</select>
+        <div class="card-picker">
+  <label>Player 1 Multiplier:
+    <select id="multNum">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">A</option>
+    </select>
+    <select id="multSuit" class="suit-select">
+      <option value="heart">♥</option>
+      <option value="diamond">♦</option>
+      <option value="club">♣</option>
+      <option value="spade">♠</option>
+    </select>
+  </label>
+</div>
       </label>
       <br><br>
       <label>Player 2 Card:
-        <select id="baseNum2">
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">A</option>
-        </select>
-        <select id="baseSuit2">
-  <option value="heart">♥ Heart</option>
-  <option value="diamond">♦ Diamond</option>
-  <option value="club">♣ Club</option>
-  <option value="spade">♠ Spade</option>
-</select>
+        <div class="card-picker">
+  <label>Player 2 Card:
+    <select id="baseNum2">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">A</option>
+    </select>
+    <select id="baseSuit2" class="suit-select">
+      <option value="heart">♥</option>
+      <option value="diamond">♦</option>
+      <option value="club">♣</option>
+      <option value="spade">♠</option>
+    </select>
+  </label>
+</div>
       </label>
       <br>
       <label>Player 2 Multiplier:
-        <select id="multNum2">
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">A</option>
-        </select>
-        <select id="multSuit2">
-  <option value="heart">♥ Heart</option>
-  <option value="diamond">♦ Diamond</option>
-  <option value="club">♣ Club</option>
-  <option value="spade">♠ Spade</option>
-</select>
+        <div class="card-picker">
+  <label>Player 2 Multiplier:
+    <select id="multNum2">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">A</option>
+    </select>
+    <select id="multSuit2" class="suit-select">
+      <option value="heart">♥</option>
+      <option value="diamond">♦</option>
+      <option value="club">♣</option>
+      <option value="spade">♠</option>
+    </select>
+  </label>
+</div>
       </label>
       <br><br>
       <button class="btn" onclick="calculateCombo()">Calculate</button>
