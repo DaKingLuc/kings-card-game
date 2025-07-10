@@ -149,6 +149,10 @@
       });
     }
     document.addEventListener('DOMContentLoaded', () => {
+  const volumeBox = document.getElementById('volumeControl');
+  window.toggleSlider = () => {
+    volumeBox.style.display = volumeBox.style.display === 'none' ? 'block' : 'none';
+  };
       const volumeSlider = document.getElementById('volumeSlider');
       if (volumeSlider) {
         volumeSlider.addEventListener('input', () => {
@@ -168,8 +172,13 @@
     <a href="future.html">Future</a>
   </nav>
 
-  <div class="slider-container">
+  <div class="slider-container" style="position: fixed; bottom: 20px; right: 20px; background: #1b1b1b; border: 2px solid crimson; border-radius: 12px; padding: 10px; z-index: 9999;">
+  <button class="btn" onclick="toggleSlider()">🎚 Volume</button>
+  <div id="volumeControl" style="margin-top: 10px; display: none;">
     <div class="slider-label">SFX Volume</div>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+  </div>
+</div>
     <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
   </div>
 
@@ -471,3 +480,4 @@ function applyShake(id, intensity = 1) {
 </script>
 </body>
 </html>
+
