@@ -273,15 +273,16 @@ window.onload = () => {
   <div class="main-container">
     <div class="scoreboard">
       <h2>Player 1 HP</h2>
-      <input id="hp1" type="number" value="200" readonly>
+      <input id="hp1" type="number" value="200" min="0">
       <div>
         <button class="btn" onclick="changeHP('hp1', -10)">-10</button>
         <button class="btn" onclick="changeHP('hp1', 10)">+10</button>
       </div>
 
       <h2>Player 2 HP</h2>
-      <input id="hp2" type="number" value="200" readonly>
+      <input id="hp2" type="number" value="200" min="0">
       <div>
+        <button class="btn" onclick="document.getElementById('hp1').value = 200; updateHPStyle('hp1'); document.getElementById('hp2').value = 200; updateHPStyle('hp2');">Reset HP</button><br><br>
         <button class="btn" onclick="changeHP('hp2', -10)">-10</button>
         <button class="btn" onclick="changeHP('hp2', 10)">+10</button>
       </div>
