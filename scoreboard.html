@@ -74,6 +74,9 @@
       transition: all 0.3s ease-in-out;
     }
     .btn {
+  box-shadow: 0 0 6px crimson;
+  transition: all 0.2s ease-in-out;
+
       background: crimson;
       border: none;
       padding: 10px 20px;
@@ -83,6 +86,8 @@
       cursor: pointer;
     }
     .btn:hover {
+  transform: scale(1.05);
+
       background: darkred;
     }
     #timer {
@@ -172,11 +177,13 @@
     <a href="future.html">Future</a>
   </nav>
 
-  <div class="slider-container" style="position: fixed; bottom: 20px; right: 20px; background: #1b1b1b; border: 2px solid crimson; border-radius: 12px; padding: 10px; z-index: 9999;">
-  <button class="btn" onclick="toggleSlider()">🎚 Volume</button>
+  <div class="slider-container" style="position: fixed; bottom: 20px; right: 20px; background: #1b1b1b; border: 2px solid crimson; border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px crimson;">
+  <button class="btn" onclick="toggleSlider()">🔊 Volume</button>
   <div id="volumeControl" style="margin-top: 10px; display: none;">
     <div class="slider-label">SFX Volume</div>
     <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+  </div>
+</div>
   </div>
 </div>
     <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
@@ -480,4 +487,3 @@ function applyShake(id, intensity = 1) {
 </script>
 </body>
 </html>
-
