@@ -118,6 +118,7 @@
   <script>
 let timerInterval;
 function startTimer() {
+  console.log("Timer started");
   clearInterval(timerInterval);
   let totalSeconds = parseInt(document.getElementById("minutesInput").value) * 60;
   const timerDisplay = document.getElementById("timer");
@@ -137,12 +138,14 @@ function startTimer() {
       totalSeconds--;
       updateDisplay();
     } else {
+      console.log("Timer ended");
       clearInterval(timerInterval);
     }
   }, 1000);
 }
 
 function resetTimer() {
+  console.log("Timer reset");
   clearInterval(timerInterval);
   const minutes = parseInt(document.getElementById("minutesInput").value);
   document.getElementById("timer").textContent = `${minutes}:00`;
@@ -151,6 +154,7 @@ function resetTimer() {
 function updateHPStyle(id) {
   const el = document.getElementById(id);
   const hp = parseInt(el.value);
+  console.log(`Updating HP style for ${id} with value ${hp}`);
   el.classList.remove('hp-green', 'hp-yellow', 'hp-red');
   if (hp > 50) {
     el.classList.add('hp-green');
@@ -163,15 +167,17 @@ function updateHPStyle(id) {
 
 function changeHP(id, value) {
   const sound = new Audio('click.mp3');
-sound.play();
+  sound.play();
   const input = document.getElementById(id);
   let hp = parseInt(input.value);
   hp = Math.max(0, hp + value);
   input.value = hp;
   updateHPStyle(id);
+  console.log(`Changed HP for ${id} by ${value}, new value: ${hp}`);
 }
 
 function calculateCombo() {
+  console.log("Calculating combo");
   const audio = document.getElementById('btnSound');
   if (audio) audio.play();
   const base = parseInt(document.getElementById("baseNum").value);
@@ -200,6 +206,9 @@ function calculateCombo() {
   if (baseSuit2 === multSuit2) multiplier2 *= 3;
   if (base2 === mult2) multiplier2 *= base2;
   const power2 = base2 * multiplier2;
+
+  console.log(`P1: base=${base}, mult=${mult}, power=${power1}`);
+  console.log(`P2: base=${base2}, mult=${mult2}, power=${power2}`);
 
   const hp1 = document.getElementById("hp1");
   const hp2 = document.getElementById("hp2");
@@ -233,146 +242,18 @@ function calculateCombo() {
   entry.innerText = `Round ${roundCount} @ ${timeStr} — P1: ${base} of ${baseSuit}, Mult: ${mult} of ${multSuit} | P2: ${base2} of ${baseSuit2}, Mult: ${mult2} of ${multSuit2} => ${resultText}`;
   log.appendChild(entry);
   log.scrollTop = log.scrollHeight;
+  console.log(`Logged round ${roundCount}`);
 }
 
 window.onload = () => {
+  console.log("Page loaded");
   updateHPStyle('hp1');
   updateHPStyle('hp2');
 };
 </script>
-
-<script>
-  
-</script>
-
 <audio id="btnSound" preload="auto" src="click.mp3"></audio>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="rules.html">Rules</a>
-    <a href="updates.html">Updates</a>
-    <a href="future.html">Future</a>
-  </nav>
-
-  <h1>KINGS Scoreboard</h1>
-
-  <div class="timer-box">
-    <h2>Game Timer</h2>
-    <div id="timer">10:00</div>
-    <label>Set Minutes: <input type="number" id="minutesInput" value="10" min="1" max="60"></label>
-    <br />
-    <button class="btn" onclick="startTimer()">Start</button>
-    <button class="btn" onclick="resetTimer()">Reset</button>
-  </div>
-
-  <div class="main-container">
-    
-        <br />
-      <input type="number" id="hp2" value="200" />
-      
-        
-        <button class="btn" onclick="changeHP('hp2', 10)">+10</button>
-      </div>
-    </div>
-
-    <div class="combo-box">
-      <h2>Combo Calculator</h2>
-      
-      <p>Select the attacker's card and the multiplier card:</p>
-      <div>
-        <label>Player 1 Card:
-          <select id="baseNum">
-                        <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6" selected>6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">A (11)</option>
-          </select>
-          <select id="baseSuit">
-            <option value="heart">♥</option>
-            <option value="diamond">♦</option>
-            <option value="club">♣</option>
-            <option value="spade">♠</option>
-          </select>
-        </label>
-        <br />
-        <label>Player 1 Multiplier:
-          <select id="multNum">
-                        <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6" selected>6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">A (11)</option>
-          </select>
-          <select id="multSuit">
-            <option value="heart">♥</option>
-            <option value="diamond">♦</option>
-            <option value="club">♣</option>
-            <option value="spade">♠</option>
-          </select>
-        </label>
-      </div>
-      <p>Second set (to subtract from first):</p>
-      <label>Player 2 Card: <select id="baseNum2">
-                    <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">A (11)</option>
-        </select>
-        <select id="baseSuit2">
-          <option value="heart">♥</option>
-          <option value="diamond">♦</option>
-          <option value="club">♣</option>
-          <option value="spade">♠</option>
-        </select>
-      </label>
-      <br />
-      <label>Player 2 Multiplier: <select id="multNum2">
-                    <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">A (11)</option>
-        </select>
-        <select id="multSuit2">
-          <option value="heart">♥</option>
-          <option value="diamond">♦</option>
-          <option value="club">♣</option>
-          <option value="spade">♠</option>
-        </select>
-      </label>
-      
-      <button class="btn" onclick="calculateCombo()">Calculate & Apply</button>
-      <p id="comboResult"></p>
-    </div>
-  </div>
-
-  <div class="log-box" style="margin-top: 30px; background: #1b1b1b; border: 2px solid crimson; border-radius: 12px; padding: 20px; max-width: 1040px; margin-left: auto; margin-right: auto;">
-    <h2>Round Log</h2>
-    $1
-    
-  </div>
+  <!-- body content here -->
 </body>
 </html>
