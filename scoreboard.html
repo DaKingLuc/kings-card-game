@@ -1,8 +1,7 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Scoreboard | KINGS</title>
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Segoe+UI&display=swap" rel="stylesheet">
   <style>
@@ -11,31 +10,33 @@
       --main-accent: crimson;
       --bg-color: #121212;
       --panel-bg: #1b1b1b;
+      --btn-shadow: 0 0 8px crimson;
     }
     body.theme-gold {
-      --text-color: #b38900;
+      --text-color: #f2d384;
       --main-accent: gold;
       --bg-color: #1a1a0f;
       --panel-bg: #2a250f;
+      --btn-shadow: 0 0 8px gold;
     }
     body.theme-arcane {
-      --text-color: #1bc0c0;
+      --text-color: #a6ffff;
       --main-accent: cyan;
       --bg-color: #0f1a1a;
       --panel-bg: #0f2a2a;
+      --btn-shadow: 0 0 8px cyan;
     }
     body {
-      transition: background 0.4s ease, color 0.4s ease;
-      color: var(--text-color, #f5f5f5);
+      transition: background 0.5s ease, color 0.5s ease;
+      color: var(--text-color);
       background: var(--bg-color);
-      background: #121212;
-      color: #f5f5f5;
       font-family: 'Segoe UI', sans-serif;
       text-align: center;
       padding: 40px;
     }
     h1, h2 {
       color: var(--main-accent);
+      text-shadow: 1px 1px 2px var(--main-accent);
     }
     nav {
       display: flex;
@@ -43,16 +44,18 @@
       background: #2a2a2a;
       padding: 10px 0;
       margin-bottom: 30px;
+      box-shadow: var(--btn-shadow);
     }
     nav a {
       color: var(--text-color);
       text-decoration: none;
       margin: 0 15px;
       font-weight: bold;
-      font-family: 'Segoe UI', sans-serif;
+      transition: color 0.3s ease;
     }
     nav a:hover {
       color: var(--main-accent);
+      text-shadow: 0 0 6px var(--main-accent);
     }
     .main-container {
       display: flex;
@@ -68,496 +71,235 @@
       padding: 20px;
       flex: 1 1 400px;
       max-width: 500px;
+      box-shadow: var(--btn-shadow);
+      transition: background 0.5s ease, border 0.5s ease;
     }
-    .timer-box {
-      background: #1b1b1b;
-      border: 2px solid crimson;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 0 auto 30px auto;
-      max-width: 500px;
+    .hp-bar {
+      position: relative;
+      width: 100%;
+      height: 16px;
+      background: #222;
+      border: 1px solid var(--main-accent);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
+      box-shadow: inset 0 0 4px var(--main-accent);
     }
-    .slider-container {
-      margin: 20px auto;
-      max-width: 300px;
+    .hp-fill {
+      height: 100%;
+      background: linear-gradient(to right, lime, gold, red);
+      transition: width 0.4s ease;
     }
-    .slider-label {
-      margin-bottom: 5px;
-      font-size: 16px;
+    .hp-label {
+      margin-top: 5px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+    .hp-tooltip {
+      font-size: 0.8rem;
+      color: var(--text-color);
+      opacity: 0.7;
+    }
+    button {
+      background: var(--main-accent);
+      color: #000;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-top: 10px;
+      cursor: pointer;
+      box-shadow: var(--btn-shadow);
+      transition: background 0.4s ease, transform 0.2s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: #fff;
+    }
+    select {
+      font-size: 1rem;
+      padding: 5px;
+      margin: 5px;
+      background: #2a2a2a;
+      color: var(--text-color);
+      border: 1px solid var(--main-accent);
+      border-radius: 6px;
+    }
+    #volumeControlContainer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--panel-bg);
+      border: 1px solid var(--main-accent);
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      box-shadow: var(--btn-shadow);
     }
     #volumeSlider {
-      width: 100%;
+      margin-left: 10px;
     }
-    input[type="number"], select {
-      font-size: 1.1rem;
-      text-align: center;
-      padding: 4px;
-      margin: 5px;
-      transition: all 0.3s ease-in-out;
-    }
-    .btn {
-  box-shadow: 0 0 6px var(--main-accent);
-  transition: all 0.2s ease-in-out;
-
-      background: var(--main-accent);
-      border: none;
-      padding: 10px 20px;
-      color: white;
-      border-radius: 6px;
-      margin: 5px;
-      cursor: pointer;
-    }
-    .btn:hover {
-  transform: scale(1.05);
-
-      background: var(--main-accent); opacity: 0.8;
-    }
-    #timer {
-      font-size: 2rem;
-      margin: 15px 0;
-    }
-    #timer.red-alert {
-      color: crimson;
-      animation: flash 1s infinite;
-    }
-    @keyframes flash {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-    .hp-green {
-      border: 2px solid lime;
-      background-color: #202f20;
-    }
-    .hp-yellow {
-      border: 2px solid gold;
-      background-color: #302e1b;
-    }
-    .hp-red {
-      border: 2px solid red;
-      background-color: #3a1b1b;
-      animation: blink-red 0.8s infinite;
-    }
-    .shake {
-      animation: shake 0.5s;
-    }
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
-    }
-    @keyframes blink-red {
-      0% { background-color: #3a1b1b; }
-      50% { background-color: #5a1b1b; }
-      100% { background-color: #3a1b1b; }
-    }
-    .combo-flash {
-      animation: comboFlash 0.6s ease-out;
-    }
-    @keyframes comboFlash {
-      0% { background-color: rgba(255, 255, 255, 0.1); transform: scale(1); }
-      50% { background-color: rgba(255, 255, 255, 0.3); transform: scale(1.05); }
-      100% { background-color: transparent; transform: scale(1); }
-    }
-    .log-entry {
-      animation: slideIn 0.4s ease-out;
-    }
-    @keyframes slideIn {
-      0% { opacity: 0; transform: translateX(-20px); }
-      100% { opacity: 1; transform: translateX(0); }
-    }
-select option {
-  font-family: 'Segoe UI', sans-serif;
-}
-select option[value="heart"],
-select option[value="diamond"] {
-  color: crimson;
-}
-select option[value="club"],
-select option[value="spade"] {
-  color: #ddd;
-}
-.card-picker {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.suit-select {
-  font-size: 1.3rem;
-  padding: 4px 8px;
-  background: var(--panel-bg);
-  border: 1px solid var(--main-accent);
-  color: var(--main-accent);
-  border-radius: 6px;
-}
-</style>
+  </style>
   <script>
-    let sfxVolume = 1;
-    function updateAudioVolume() {
-      document.querySelectorAll('audio').forEach(audio => {
-        audio.volume = sfxVolume;
-      });
+    let hp1 = 200;
+    let hp2 = 200;
+    const maxHP = 200;
+    let timerInterval;
+    let roundCount = 1;
+
+    function updateHPBar(player) {
+      const hpValue = player === 1 ? hp1 : hp2;
+      const bar = document.getElementById(`hp-fill-${player}`);
+      if (bar) bar.style.width = `${(hpValue / maxHP) * 100}%`;
+      const label = document.getElementById(`hp-label-${player}`);
+      if (label) label.textContent = `HP: ${hpValue} / ${maxHP}`;
     }
-    document.addEventListener('DOMContentLoaded', () => {
-  const volumeBox = document.getElementById('volumeControl');
-  window.toggleSlider = () => {
-    const isOpen = volumeBox.style.maxHeight && volumeBox.style.maxHeight !== '0px';
-    volumeBox.style.maxHeight = isOpen ? '0px' : '100px';
-};
-      const volumeSlider = document.getElementById('volumeSlider');
-      if (volumeSlider) {
-        volumeSlider.addEventListener('input', () => {
-          sfxVolume = parseFloat(volumeSlider.value);
-          updateAudioVolume();
-        });
-        updateAudioVolume();
-      }
-    });
-  function changeTheme(theme) {
-  document.body.className = theme === 'default' ? '' : `theme-${theme}`;
-}
-</script>
+
+    function changeHP(player, amount) {
+      if (player === 1) hp1 = Math.max(0, Math.min(maxHP, hp1 + amount));
+      if (player === 2) hp2 = Math.max(0, Math.min(maxHP, hp2 + amount));
+      updateHPBar(1);
+      updateHPBar(2);
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      const input = document.getElementById("minutesInput");
+      let totalSeconds = parseInt(input.value) * 60;
+      const display = document.getElementById("timer");
+      timerInterval = setInterval(() => {
+        if (totalSeconds <= 0) {
+          clearInterval(timerInterval);
+        }
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        display.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        totalSeconds--;
+      }, 1000);
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      const input = document.getElementById("minutesInput");
+      const display = document.getElementById("timer");
+      display.textContent = `${input.value}:00`;
+    }
+
+    function calculateCombo() {
+      const base = parseInt(document.getElementById("baseNum").value);
+      const mult = parseInt(document.getElementById("multNum").value);
+      const baseSuit = document.getElementById("baseSuit").value;
+      const multSuit = document.getElementById("multSuit").value;
+
+      let multiplier = 1;
+      const sameColor = (s1, s2) => {
+        const red = ['heart', 'diamond'];
+        return (red.includes(s1) && red.includes(s2)) || (!red.includes(s1) && !red.includes(s2));
+      };
+
+      if (sameColor(baseSuit, multSuit)) multiplier *= 2;
+      if (baseSuit === multSuit) multiplier *= 3;
+      if (base === mult) multiplier *= base;
+
+      const power = base * multiplier;
+      const damage = power;
+      hp2 = Math.max(0, hp2 - damage);
+      updateHPBar(2);
+
+      const resultText = `Player 1 Combo Power: ${power} | Player 2 takes ${damage} damage.`;
+      document.getElementById("comboResult").textContent = resultText;
+
+      const log = document.getElementById("roundLog");
+      const entry = document.createElement("li");
+      entry.textContent = `Round ${roundCount++}: ${resultText}`;
+      log.appendChild(entry);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function toggleTheme(theme) {
+      document.body.className = '';
+      if (theme === 'gold') document.body.classList.add('theme-gold');
+      else if (theme === 'arcane') document.body.classList.add('theme-arcane');
+    }
+
+    window.onload = () => {
+      updateHPBar(1);
+      updateHPBar(2);
+      resetTimer();
+    };
+  </script>
 </head>
 <body>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="rules.html">Rules</a>
-    <a href="updates.html">Updates</a>
-    <a href="future.html">Future</a>
-    
+    <a href="#">Home</a>
+    <a href="#">Rules</a>
+    <a href="#">Updates</a>
+    <a href="#">Future</a>
   </nav>
-  <div class="slider-container" style="position: fixed; bottom: 20px; left: 20px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px var(--main-accent); font-family: 'Segoe UI', sans-serif;">
-    <label for="themePicker" class="slider-label">🎨 Theme</label>
-    <select id="themePicker" onchange="changeTheme(this.value)">
-      <option value="default">Default</option>
-      <option value="gold">Royal Gold</option>
-      <option value="arcane">Arcane Blue</option>
+
+  <div id="volumeControlContainer">
+    <span>🔊</span>
+    <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="1">
+  </div>
+
+  <div style="position: fixed; bottom: 20px; left: 20px;">
+    <select onchange="toggleTheme(this.value)">
+      <option value="">Default</option>
+      <option value="gold">Gold</option>
+      <option value="arcane">Arcane</option>
     </select>
-  </div>
-    
-  </nav>
-
-  <div class="slider-container" style="position: fixed; bottom: 20px; right: 20px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px var(--main-accent); font-family: 'Segoe UI', sans-serif; transition: all 0.4s ease;">
-  <button class="btn" onclick="toggleSlider()">🔊 Volume</button>
-  <div id="volumeControl" style="margin-top: 10px; overflow: hidden; max-height: 0; transition: max-height 0.4s ease;">
-    <div class="slider-label">🎚 SFX Volume</div>
-    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
-  </div>
-</div>
-
-  <div class="timer-box" style="background: var(--panel-bg); border: 2px solid var(--main-accent);">
-    <h2>Game Timer</h2>
-    <input id="minutesInput" type="number" value="10" min="1" max="60"> minutes
-    <div id="timer">10:00</div>
-    <button class="btn" onclick="startTimer()">Start</button>
-    <button class="btn" onclick="resetTimer()">Reset</button>
   </div>
 
   <div class="main-container">
     <div class="scoreboard">
-      <h2>Player 1 HP</h2>
-      <input id="hp1" type="number" value="200" min="0">
-      <div>
-        <button class="btn" onclick="changeHP('hp1', -10)">-10</button>
-        <button class="btn" onclick="changeHP('hp1', 10)">+10</button>
-      </div>
+      <h2>Player 1</h2>
+      <button onclick="changeHP(1, -10)">-10</button>
+      <button onclick="changeHP(1, 10)">+10</button>
+      <div class="hp-bar"><div class="hp-fill" id="hp-fill-1"></div></div>
+      <div class="hp-label" id="hp-label-1"></div>
 
-      <h2>Player 2 HP</h2>
-      <input id="hp2" type="number" value="200" min="0">
-      <div>
-        <button class="btn" onclick="document.getElementById('hp1').value = 200; updateHPStyle('hp1'); document.getElementById('hp2').value = 200; updateHPStyle('hp2'); playReviveSound();">Reset HP</button><br><br>
-        <button class="btn" onclick="changeHP('hp2', -10)">-10</button>
-        <button class="btn" onclick="changeHP('hp2', 10)">+10</button>
-      </div>
+      <h2>Player 2</h2>
+      <button onclick="changeHP(2, -10)">-10</button>
+      <button onclick="changeHP(2, 10)">+10</button>
+      <div class="hp-bar"><div class="hp-fill" id="hp-fill-2"></div></div>
+      <div class="hp-label" id="hp-label-2"></div>
     </div>
 
     <div class="combo-box">
       <h2>Combo Calculator</h2>
-      <label>Player 1 Card:
-        <div class="card-picker">
-  <label>Player 1 Card:
-    <select id="baseNum">
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-      <option value="11">A</option>
-    </select>
-    <select id="baseSuit" class="suit-select">
-      <option value="heart">♥</option>
-      <option value="diamond">♦</option>
-      <option value="club">♣</option>
-      <option value="spade">♠</option>
-    </select>
-  </label>
-</div>
-      </label>
+      <select id="baseNum">${[...Array(10).keys()].map(i => `<option value="${i+2}">${i+2}</option>`).join('')}</select>
+      <select id="baseSuit">
+        <option value="heart">Hearts</option>
+        <option value="diamond">Diamonds</option>
+        <option value="club">Clubs</option>
+        <option value="spade">Spades</option>
+      </select>
       <br>
-      <label>Player 1 Multiplier:
-        <div class="card-picker">
-  <label>Player 1 Multiplier:
-    <select id="multNum">
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-      <option value="11">A</option>
-    </select>
-    <select id="multSuit" class="suit-select">
-      <option value="heart">♥</option>
-      <option value="diamond">♦</option>
-      <option value="club">♣</option>
-      <option value="spade">♠</option>
-    </select>
-  </label>
-</div>
-      </label>
-      <br><br>
-      <label>Player 2 Card:
-        <div class="card-picker">
-  <label>Player 2 Card:
-    <select id="baseNum2">
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-      <option value="11">A</option>
-    </select>
-    <select id="baseSuit2" class="suit-select">
-      <option value="heart">♥</option>
-      <option value="diamond">♦</option>
-      <option value="club">♣</option>
-      <option value="spade">♠</option>
-    </select>
-  </label>
-</div>
-      </label>
+      <select id="multNum">${[...Array(10).keys()].map(i => `<option value="${i+2}">${i+2}</option>`).join('')}</select>
+      <select id="multSuit">
+        <option value="heart">Hearts</option>
+        <option value="diamond">Diamonds</option>
+        <option value="club">Clubs</option>
+        <option value="spade">Spades</option>
+      </select>
       <br>
-      <label>Player 2 Multiplier:
-        <div class="card-picker">
-  <label>Player 2 Multiplier:
-    <select id="multNum2">
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-      <option value="11">A</option>
-    </select>
-    <select id="multSuit2" class="suit-select">
-      <option value="heart">♥</option>
-      <option value="diamond">♦</option>
-      <option value="club">♣</option>
-      <option value="spade">♠</option>
-    </select>
-  </label>
-</div>
-      </label>
-      <br><br>
-      <button class="btn" onclick="calculateCombo()">Calculate</button>
-      <div id="comboResult" style="margin-top: 10px;"></div>
+      <button onclick="calculateCombo()">Calculate</button>
+      <div id="comboResult"></div>
     </div>
   </div>
 
-  <div class="log-box" style="margin-top: 30px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 20px; max-width: 1040px; margin-left: auto; margin-right: auto;">
+  <div style="margin-top: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
     <h2>Round Log</h2>
-    <ul id="roundLog" style="text-align: left; max-height: 200px; overflow-y: auto;"></ul>
+    <ul id="roundLog" style="text-align: left; max-height: 200px; overflow-y: auto; background: var(--panel-bg); padding: 10px; border-radius: 10px; border: 1px solid var(--main-accent);"></ul>
   </div>
 
-  <audio id="lighthit" preload="auto" src="lighthit.mp3"></audio>
-  <audio id="heavyhit" preload="auto" src="heavyhit.mp3"></audio>
-  <audio id="revive" preload="auto" src="revive.mp3"></audio>
-
-  <script>
-let timerInterval;
-function startTimer() {
-  console.log("Timer started");
-  clearInterval(timerInterval);
-  let totalSeconds = parseInt(document.getElementById("minutesInput").value) * 60;
-  const timerDisplay = document.getElementById("timer");
-
-  const updateDisplay = () => {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    if (totalSeconds <= 60) {
-      timerDisplay.classList.add("red-alert");
-    }
-  };
-
-  updateDisplay();
-  timerInterval = setInterval(() => {
-    if (totalSeconds > 0) {
-      totalSeconds--;
-      updateDisplay();
-    } else {
-      console.log("Timer ended");
-      clearInterval(timerInterval);
-    }
-  }, 1000);
-}
-
-function resetTimer() {
-  console.log("Timer reset");
-  clearInterval(timerInterval);
-  const minutes = parseInt(document.getElementById("minutesInput").value);
-  document.getElementById("timer").textContent = `${minutes}:00`;
-  document.getElementById("timer").classList.remove("red-alert");
-}
-
-function updateHPStyle(id) {
-  const el = document.getElementById(id);
-  const hp = parseInt(el.value);
-  console.log(`Updating HP style for ${id} with value ${hp}`);
-  el.classList.remove('hp-green', 'hp-yellow', 'hp-red');
-  if (hp > 50) {
-    el.classList.add('hp-green');
-  } else if (hp > 25) {
-    el.classList.add('hp-yellow');
-  } else {
-    el.classList.add('hp-red');
-  }
-}
-
-function changeHP(id, value) {
-  const sound = new Audio('click.mp3');
-  sound.volume = sfxVolume;
-  sound.play();
-  const input = document.getElementById(id);
-  let hp = parseInt(input.value);
-  hp = Math.max(0, hp + value);
-  input.value = hp;
-  updateHPStyle(id);
-  console.log(`Changed HP for ${id} by ${value}, new value: ${hp}`);
-}
-
-function calculateCombo() {
-  console.log("Calculating combo");
-  const lightHit = document.getElementById('lighthit');
-  const heavyHit = document.getElementById('heavyhit');
-  const base = parseInt(document.getElementById("baseNum").value);
-  const mult = parseInt(document.getElementById("multNum").value);
-  const baseSuit = document.getElementById("baseSuit").value;
-  const multSuit = document.getElementById("multSuit").value;
-
-  const base2 = parseInt(document.getElementById("baseNum2").value);
-  const mult2 = parseInt(document.getElementById("multNum2").value);
-  const baseSuit2 = document.getElementById("baseSuit2").value;
-  const multSuit2 = document.getElementById("multSuit2").value;
-
-  const sameColor = (s1, s2) => {
-    const red = ['heart', 'diamond'];
-    return (red.includes(s1) && red.includes(s2)) || (!red.includes(s1) && !red.includes(s2));
-  };
-
-  let multiplier1 = 1;
-  if (sameColor(baseSuit, multSuit)) multiplier1 *= 2;
-  if (baseSuit === multSuit) multiplier1 *= 3;
-  if (base === mult) multiplier1 *= base;
-  const power1 = base * multiplier1;
-
-  let multiplier2 = 1;
-  if (sameColor(baseSuit2, multSuit2)) multiplier2 *= 2;
-  if (baseSuit2 === multSuit2) multiplier2 *= 3;
-  if (base2 === mult2) multiplier2 *= base2;
-  const power2 = base2 * multiplier2;
-
-  console.log(`P1: base=${base}, mult=${mult}, power=${power1}`);
-  console.log(`P2: base=${base2}, mult=${mult2}, power=${power2}`);
-
-  const hp1 = document.getElementById("hp1");
-  const hp2 = document.getElementById("hp2");
-
-  const timerDisplay = document.getElementById("timer").textContent;
-  const timeStr = timerDisplay;
-  roundCount = (typeof roundCount === 'undefined') ? 1 : roundCount + 1;
-  let resultText = `Player 1 Total: ${power1}, Player 2 Total: ${power2}.`;
-  if (power1 > power2) {
-    const damage = power1 - power2;
-    hp2.value = Math.max(0, hp2.value - damage);
-    updateHPStyle('hp2');
-    resultText += ` Player 2 takes ${damage} damage.`;
-    if (damage > 50 && heavyHit) {
-      heavyHit.volume = sfxVolume;
-      heavyHit.play();
-    } else if (lightHit) {
-      lightHit.volume = sfxVolume;
-      lightHit.play();
-    }
-    applyShake('hp1', Math.min(3, Math.ceil(damage / 50)));
-    applyShake('hp2', Math.min(3, Math.ceil(damage / 50)));
-  } else if (power2 > power1) {
-    const damage = power2 - power1;
-    hp1.value = Math.max(0, hp1.value - damage);
-    updateHPStyle('hp1');
-    resultText += ` Player 1 takes ${damage} damage.`;
-    if (damage > 50 && heavyHit) {
-      heavyHit.volume = sfxVolume;
-      heavyHit.play();
-    } else if (lightHit) {
-      lightHit.volume = sfxVolume;
-      lightHit.play();
-    }
-  } else {
-    resultText += " It's a tie. No damage dealt.";
-  }
-
-  const comboBox = document.getElementById("comboResult");
-  comboBox.innerText = resultText;
-  if (power1 !== power2 && Math.abs(power1 - power2) > 50) {
-    comboBox.classList.add("combo-flash");
-    setTimeout(() => comboBox.classList.remove("combo-flash"), 600);
-  }
-
-  const log = document.getElementById("roundLog");
-  const entry = document.createElement("li");
-  entry.innerText = `Round ${roundCount} @ ${timeStr} — P1: ${base} of ${baseSuit}, Mult: ${mult} of ${multSuit} | P2: ${base2} of ${baseSuit2}, Mult: ${mult2} of ${multSuit2} => ${resultText}`;
-  entry.classList.add("log-entry");
-  log.appendChild(entry);
-  log.scrollTop = log.scrollHeight;
-  console.log(`Logged round ${roundCount}`);
-}
-
-window.onload = () => {
-  console.log("Page loaded");
-  updateHPStyle('hp1');
-  updateHPStyle('hp2');
-};
-
-function playReviveSound() {
-  const revive = document.getElementById("revive");
-  if (revive) {
-    revive.volume = sfxVolume;
-    revive.play();
-  }
-}
-
-function applyShake(id, intensity = 1) {
-  const el = document.getElementById(id);
-  el.classList.add("shake");
-  setTimeout(() => el.classList.remove("shake"), 500 * intensity);
-}
-</script>
+  <div style="margin-top: 40px;">
+    <h2>Game Timer</h2>
+    <input id="minutesInput" type="number" value="10" min="1" max="60"> minutes
+    <div id="timer">10:00</div>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="resetTimer()">Reset</button>
+  </div>
 </body>
 </html>
