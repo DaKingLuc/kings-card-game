@@ -188,8 +188,9 @@ select option[value="spade"] {
     document.addEventListener('DOMContentLoaded', () => {
   const volumeBox = document.getElementById('volumeControl');
   window.toggleSlider = () => {
-    volumeBox.style.maxHeight = volumeBox.style.maxHeight ? null : '100px';
-  };
+    const isOpen = volumeBox.style.maxHeight && volumeBox.style.maxHeight !== '0px';
+    volumeBox.style.maxHeight = isOpen ? '0px' : '100px';
+};
       const volumeSlider = document.getElementById('volumeSlider');
       if (volumeSlider) {
         volumeSlider.addEventListener('input', () => {
