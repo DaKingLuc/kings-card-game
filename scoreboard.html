@@ -178,8 +178,8 @@ function changeHP(id, value) {
 
 function calculateCombo() {
   console.log("Calculating combo");
-  const audio = document.getElementById('btnSound');
-  if (audio) audio.play();
+  const lightHit = document.getElementById('lighthit');
+  const heavyHit = document.getElementById('heavyhit');
   const base = parseInt(document.getElementById("baseNum").value);
   const mult = parseInt(document.getElementById("multNum").value);
   const baseSuit = document.getElementById("baseSuit").value;
@@ -217,20 +217,12 @@ function calculateCombo() {
   const timeStr = timerDisplay;
   roundCount = (typeof roundCount === 'undefined') ? 1 : roundCount + 1;
   let resultText = `Player 1 Total: ${power1}, Player 2 Total: ${power2}.`;
-  if (power1 > power2) {
-    const damage = power1 - power2;
-    hp2.value = Math.max(0, parseInt(hp2.value) - damage);
-    updateHPStyle("hp2");
-    hp2.classList.add("shake");
-    setTimeout(() => hp2.classList.remove("shake"), Math.min(1000, damage * 20));
-    resultText += `Player 2 takes ${damage} damage.`;
-  } else if (power2 > power1) {
-    const damage = power2 - power1;
-    hp1.value = Math.max(0, parseInt(hp1.value) - damage);
-    updateHPStyle("hp1");
-    hp1.classList.add("shake");
-    setTimeout(() => hp1.classList.remove("shake"), Math.min(1000, damage * 20));
-    resultText += `Player 1 takes ${damage} damage.`;
+  if (power1 > power2) {$1
+    if (damage > 50 && heavyHit) heavyHit.play();
+    else if (lightHit) lightHit.play(); damage.`;
+  } else if (power2 > power1) {$1
+    if (damage > 50 && heavyHit) heavyHit.play();
+    else if (lightHit) lightHit.play(); damage.`;
   } else {
     resultText += "It's a tie. No damage dealt.";
   }
@@ -251,7 +243,8 @@ window.onload = () => {
   updateHPStyle('hp2');
 };
 </script>
-<audio id="btnSound" preload="auto" src="click.mp3"></audio>
+<audio id="lighthit" preload="auto" src="lighthit.mp3"></audio>
+<audio id="heavyhit" preload="auto" src="heavyhit.mp3"></audio>
 </head>
 <body>
   <nav>
