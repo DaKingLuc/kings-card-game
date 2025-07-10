@@ -114,7 +114,25 @@
       50% { background-color: #5a1b1b; }
       100% { background-color: #3a1b1b; }
     }
-  </style>
+    .combo-flash {
+    animation: comboFlash 0.6s ease-out;
+  }
+
+  @keyframes comboFlash {
+    0% { background-color: rgba(255, 255, 255, 0.1); transform: scale(1); }
+    50% { background-color: rgba(255, 255, 255, 0.3); transform: scale(1.05); }
+    100% { background-color: transparent; transform: scale(1); }
+  }
+
+  .log-entry {
+    animation: slideIn 0.4s ease-out;
+  }
+
+  @keyframes slideIn {
+    0% { opacity: 0; transform: translateX(-20px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+</style>
   <script>
 let timerInterval;
 function startTimer() {
@@ -235,11 +253,17 @@ function calculateCombo() {
     resultText += "It's a tie. No damage dealt.";
   }
 
-  document.getElementById("comboResult").innerText = resultText;
+  const comboBox = document.getElementById("comboResult");
+  comboBox.innerText = resultText;
+  if (power1 !== power2 && Math.abs(power1 - power2) > 50) {
+    comboBox.classList.add("combo-flash");
+    setTimeout(() => comboBox.classList.remove("combo-flash"), 600);
+  }
 
   const log = document.getElementById("roundLog");
   const entry = document.createElement("li");
   entry.innerText = `Round ${roundCount} @ ${timeStr} — P1: ${base} of ${baseSuit}, Mult: ${mult} of ${multSuit} | P2: ${base2} of ${baseSuit2}, Mult: ${mult2} of ${multSuit2} => ${resultText}`;
+  entry.classList.add("log-entry");
   log.appendChild(entry);
   log.scrollTop = log.scrollHeight;
   console.log(`Logged round ${roundCount}`);
