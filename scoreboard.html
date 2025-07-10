@@ -6,21 +6,26 @@
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Segoe+UI&display=swap" rel="stylesheet">
   <style>
     :root {
+      --text-color: #f5f5f5;
       --main-accent: crimson;
       --bg-color: #121212;
       --panel-bg: #1b1b1b;
     }
     body.theme-gold {
+      --text-color: #b38900;
       --main-accent: gold;
       --bg-color: #1a1a0f;
       --panel-bg: #2a250f;
     }
     body.theme-arcane {
+      --text-color: #1bc0c0;
       --main-accent: cyan;
       --bg-color: #0f1a1a;
       --panel-bg: #0f2a2a;
     }
     body {
+      transition: background 0.4s ease, color 0.4s ease;
+      color: var(--text-color, #f5f5f5);
       background: var(--bg-color);
       background: #121212;
       color: #f5f5f5;
@@ -29,7 +34,7 @@
       padding: 40px;
     }
     h1, h2 {
-      color: crimson;
+      color: var(--main-accent);
     }
     nav {
       display: flex;
@@ -39,14 +44,14 @@
       margin-bottom: 30px;
     }
     nav a {
-      color: #f5f5f5;
+      color: var(--text-color);
       text-decoration: none;
       margin: 0 15px;
       font-weight: bold;
       font-family: 'Segoe UI', sans-serif;
     }
     nav a:hover {
-      color: crimson;
+      color: var(--main-accent);
     }
     .main-container {
       display: flex;
@@ -194,12 +199,16 @@
     <a href="rules.html">Rules</a>
     <a href="updates.html">Updates</a>
     <a href="future.html">Future</a>
-    <select id="themePicker" class="btn" style="margin-left: 10px;" onchange="changeTheme(this.value)">
+    
+  </nav>
+  <div class="slider-container" style="position: fixed; bottom: 20px; left: 20px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px var(--main-accent); font-family: 'Segoe UI', sans-serif;">
+    <label for="themePicker" class="slider-label">🎨 Theme</label>
+    <select id="themePicker" onchange="changeTheme(this.value)">
       <option value="default">Default</option>
       <option value="gold">Royal Gold</option>
       <option value="arcane">Arcane Blue</option>
     </select>
-  </nav>
+  </div>
     <select id="themePicker" class="btn" style="margin-left: 10px;" onchange="changeTheme(this.value)">
       <option value="default">Default</option>
       <option value="gold">Royal Gold</option>
@@ -207,7 +216,7 @@
     </select>
   </nav>
 
-  <div class="slider-container" style="position: fixed; bottom: 20px; left: 20px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px var(--main-accent); font-family: 'Segoe UI', sans-serif;">
+  <div class="slider-container" style="position: fixed; bottom: 20px; right: 20px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px var(--main-accent); font-family: 'Segoe UI', sans-serif; transition: all 0.4s ease;">
   <button class="btn" onclick="toggleSlider()">🔊 Volume</button>
   <div id="volumeControl" style="margin-top: 10px; overflow: hidden; max-height: 0; transition: max-height 0.4s ease;">
     <div class="slider-label">🎚 SFX Volume</div>
