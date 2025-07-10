@@ -217,12 +217,20 @@ function calculateCombo() {
   const timeStr = timerDisplay;
   roundCount = (typeof roundCount === 'undefined') ? 1 : roundCount + 1;
   let resultText = `Player 1 Total: ${power1}, Player 2 Total: ${power2}.`;
-  if (power1 > power2) {$1
+  if (power1 > power2) {
+    const damage = power1 - power2;
+    hp2.value = Math.max(0, hp2.value - damage);
+    updateHPStyle('hp2');
+    resultText += ` Player 2 takes ${damage} damage.`;
     if (damage > 50 && heavyHit) heavyHit.play();
-    else if (lightHit) lightHit.play(); damage.`;
-  } else if (power2 > power1) {$1
+    else if (lightHit) lightHit.play();
+  } else if (power2 > power1) {
+    const damage = power2 - power1;
+    hp1.value = Math.max(0, hp1.value - damage);
+    updateHPStyle('hp1');
+    resultText += ` Player 1 takes ${damage} damage.`;
     if (damage > 50 && heavyHit) heavyHit.play();
-    else if (lightHit) lightHit.play(); damage.`;
+    else if (lightHit) lightHit.play();
   } else {
     resultText += "It's a tie. No damage dealt.";
   }
