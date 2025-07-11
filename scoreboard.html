@@ -209,13 +209,26 @@ select option[value="spade"] {
 }
 </style>
   <script>
-    let sfxVolume = 1;
-    function updateAudioVolume() {
-      document.querySelectorAll('audio').forEach(audio => {
-        audio.volume = sfxVolume;
-      });
-    }
-    document.addEventListener('DOMContentLoaded', () => {
+let sfxVolume = 1;
+function updateAudioVolume() {
+  document.querySelectorAll('audio').forEach(audio => {
+    audio.volume = sfxVolume;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+      function changeTheme(theme) {
+  const body = document.body;
+  // Remove all theme-* classes
+  body.className = Array.from(body.classList)
+    .filter(cls => !cls.startsWith("theme-"))
+    .join(" ");
+
+  // Apply new theme
+  if (theme !== 'default') {
+    body.classList.add(`theme-${theme}`);
+  }
+}
   const volumeBox = document.getElementById('volumeControl');
   window.toggleSlider = () => {
     const isOpen = volumeBox.style.maxHeight && volumeBox.style.maxHeight !== '0px';
@@ -230,21 +243,7 @@ select option[value="spade"] {
         updateAudioVolume();
       }
     });
-  function changeTheme(theme) {
-  const body = document.body;
-  // Remove all theme-* classes
-  body.className = Array.from(body.classList)
-    .filter(cls => !cls.startsWith("theme-"))
-    .join(" ");
-
-  // Apply new theme
-  if (theme !== 'default') {
-    body.classList.add(`theme-${theme}`);
-  }
-}`);
-  }
-}`;
-}
+    
 </script>
 </head>
 <body class="theme-default">
