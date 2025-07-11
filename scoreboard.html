@@ -12,7 +12,7 @@
     :root {
   --text-color: #f5f5f5;
   --main-accent: crimson;
-  --bg-color: linear-gradient(135deg, #2c0f0f, #1a0000);
+  --bg-color: linear-gradient(135deg, #2b2b2b, #3a0f0f);
   --panel-bg: #1b1b1b;
     }
     body.theme-gold {
@@ -245,9 +245,13 @@ select option[value="spade"] {
   </nav>
   <div class="slider-container" style="position: fixed; bottom: 20px; left: 20px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 10px; z-index: 9999; box-shadow: 0 0 10px var(--main-accent); font-family: 'Segoe UI', sans-serif;">
     <label for="themePicker" class="slider-label">🎨 Theme</label>
-    $1
+    <select id="themePicker" onchange="changeTheme(this.value)">
+      <option value="default">Default</option>
+      <option value="gold">Royal Gold</option>
+      <option value="arcane">Arcane Blue</option>
       <option value="forest">Dark Forest</option>
       <option value="crimson">Crimson Magic</option>
+    </select>
     </select>
   </div>
     
