@@ -454,7 +454,10 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="log-box" style="margin-top: 30px; background: var(--panel-bg); border: 2px solid var(--main-accent); border-radius: 12px; padding: 20px; max-width: 1040px; margin-left: auto; margin-right: auto;">
     <h2>Round Log</h2>
     <ul id="roundLog" style="text-align: left; max-height: 200px; overflow-y: auto;"></ul>
-  </div>
+  <div style="text-align:center; margin-top: 20px;">
+  <button class="btn" onclick="document.getElementById('roundLog').innerHTML = ''">Clear Log</button>
+</div>
+
 
   <audio id="lighthit" preload="auto" src="lighthit.mp3"></audio>
   <audio id="heavyhit" preload="auto" src="heavyhit.mp3"></audio>
