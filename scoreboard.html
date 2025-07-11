@@ -4,6 +4,42 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<style>
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+#roundLog li {
+  margin-bottom: 6px;
+  padding-left: 4px;
+  border-left: 2px solid var(--main-accent);
+  opacity: 0;
+  animation: fadeInLog 0.4s ease forwards;
+}
+@keyframes fadeInLog {
+  to { opacity: 1; }
+}
+.scoreboard.damage-flash {
+  box-shadow: 0 0 15px crimson;
+  transition: box-shadow 0.3s ease-in-out;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('fade-in');
+});
+
+function flashScoreboard(id) {
+  const box = document.getElementById(id)?.closest('.scoreboard');
+  if (box) {
+    box.classList.add('damage-flash');
+    setTimeout(() => box.classList.remove('damage-flash'), 300);
+  }
+}
+</script>
 <head>
   <meta charset="UTF-8" />
   <title>Scoreboard | KINGS</title>
