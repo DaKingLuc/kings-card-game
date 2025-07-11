@@ -231,7 +231,17 @@ select option[value="spade"] {
       }
     });
   function changeTheme(theme) {
-  document.body.className = theme === 'default' ? '' : `theme-${theme}`;
+  const body = document.body;
+  // Remove all theme-* classes
+  body.className = Array.from(body.classList)
+    .filter(cls => !cls.startsWith("theme-"))
+    .join(" ");
+
+  // Apply new theme
+  if (theme !== 'default') {
+    body.classList.add(`theme-${theme}`);
+  }
+}`;
 }
 </script>
 </head>
