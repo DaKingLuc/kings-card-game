@@ -1,7 +1,4 @@
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <style>
@@ -23,8 +20,9 @@
   to { opacity: 1; }
 }
 .scoreboard.damage-flash {
-  box-shadow: 0 0 15px crimson;
+  box-shadow: 0 0 25px 6px crimson;
   transition: box-shadow 0.3s ease-in-out;
+  background-color: rgba(255, 0, 0, 0.05);
 }
 </style>
 <script>
@@ -33,7 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function flashScoreboard(id) {
-  const box = document.getElementById(id)?.closest('.scoreboard');
+  const input = document.getElementById(id);
+  const box = input?.closest('.scoreboard');
   if (box) {
     box.classList.add('damage-flash');
     setTimeout(() => box.classList.remove('damage-flash'), 300);
